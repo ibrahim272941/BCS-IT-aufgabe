@@ -16,12 +16,11 @@ import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 import { Formik } from "formik";
 import * as Yup from "yup";
 import Resim from "./avatar.png";
+import { useAuth } from "../contexts/AuthContext";
+import { auth } from "../auth/getAuth";
+import { createUserWithEmailAndPassword } from "firebase/auth";
 
 const signUpValidationSchema = Yup.object().shape({
-  username: Yup.string()
-    .required("Display names is required")
-    .min(2, "Too short")
-    .max(15, "Must be 15 char or less"),
   email: Yup.string().required("Email is required").email("Invalid Email"),
   password: Yup.string()
     .required("Password not entered")
@@ -37,8 +36,9 @@ const signUpValidationSchema = Yup.object().shape({
 const Register = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [showPassword2, setShowPassword2] = useState(false);
+  const [loading, setLoading] = useState();
+  const { signup } = useAuth();
   const initialValues = {
-    username: "",
     email: "",
     password: "",
     password2: "",
@@ -56,15 +56,16 @@ const Register = () => {
     setShowPassword2(!showPassword2);
   };
 
-  const handleSubmit = (values, { resetForm }) => {
-    // console.log(values);
-    alert(
-      `username: ${values.username}
-      email: ${values.email}
-      password: ${values.password}
-      password2: ${values.password2}`
-    );
+  const handleSubmit = async (values, { resetForm }) => {
+    try {
+      setLoading(true);
+      await createUserWithEmailAndPassword(auth, values.email, values.password);
+    } catch (error) {
+      console.log(error);
+    }
+    setLoading(false);
     resetForm();
+    console.log(values.email);
   };
   return (
     <Container
@@ -101,7 +102,7 @@ const Register = () => {
         }) => (
           <form onSubmit={handleSubmit}>
             <Grid container spacing={3}>
-              <Grid item xs={12}>
+              {/* <Grid item xs={12}>
                 <TextField
                   name="username"
                   label="User Name"
@@ -113,7 +114,7 @@ const Register = () => {
                   error={touched.username && Boolean(errors.username)}
                   fullWidth
                 />
-              </Grid>
+              </Grid> */}
               <Grid item xs={12}>
                 <TextField
                   name="email"
@@ -195,6 +196,7 @@ const Register = () => {
                   variant="contained"
                   color="primary"
                   fullWidth
+                  disabled={loading}
                 >
                   Register
                 </Button>

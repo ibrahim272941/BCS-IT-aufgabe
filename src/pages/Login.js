@@ -1,13 +1,11 @@
 import React, { useState } from "react";
 import {
   Avatar,
-  Box,
   Button,
   Container,
   Grid,
   IconButton,
   InputAdornment,
-  Link,
   TextField,
   Typography,
 } from "@mui/material";
@@ -16,26 +14,18 @@ import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 import { Formik } from "formik";
 import * as Yup from "yup";
 import Resim from "./avatar.png";
+import { signInWithEmailAndPassword } from "firebase/auth";
+import { auth } from "../auth/getAuth";
+import { useNavigate } from "react-router-dom";
 
 const signUpValidationSchema = Yup.object().shape({
-  username: Yup.string()
-    .required("Display names is required")
-    .min(2, "Too short")
-    .max(15, "Must be 15 char or less"),
   email: Yup.string().required("Email is required").email("Invalid Email"),
-  password: Yup.string()
-    .required("Password not entered")
-    .min(6, "Password is too short - should be 6 chars minimum")
-    .matches(/\d+/, "Password must have a number")
-    .matches(/[a-z]+/, "Pasword must have a lowercase")
-    .matches(/[A-Z]/, "Password must have a uppercase")
-    .matches(/[!?.@#$%^&*()-+]/, "Password must have a special char"),
-  password2: Yup.string()
-    .min(6, "Password is too short - should be 6 chars minimum")
-    .oneOf([Yup.ref("password"), null], "password didn't match"),
+  password: Yup.string().required("Password not entered"),
 });
-const Register = () => {
+const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
+  const [loading, setLoading] = useState();
+  const navigate = useNavigate();
 
   const initialValues = {
     username: "",
@@ -49,15 +39,18 @@ const Register = () => {
     setShowPassword(!showPassword);
   };
 
-  const handleSubmit = (values, { resetForm }) => {
-    // console.log(values);
-    alert(
-      `username: ${values.username}
-      email: ${values.email}
-      password: ${values.password}
-      `
-    );
+  const handleSubmit = async (values, { resetForm }) => {
+    try {
+      setLoading(true);
+      await signInWithEmailAndPassword(auth, values.email, values.password);
+      navigate("/");
+    } catch (error) {
+      console.log(error);
+    }
+
+    setLoading(false);
     resetForm();
+    console.log(values.email);
   };
   return (
     <Container
@@ -94,7 +87,7 @@ const Register = () => {
         }) => (
           <form onSubmit={handleSubmit}>
             <Grid container spacing={3}>
-              <Grid item xs={12}>
+              {/* <Grid item xs={12}>
                 <TextField
                   name="username"
                   label="User Name"
@@ -106,7 +99,7 @@ const Register = () => {
                   error={touched.username && Boolean(errors.username)}
                   fullWidth
                 />
-              </Grid>
+              </Grid> */}
               <Grid item xs={12}>
                 <TextField
                   name="email"
@@ -158,6 +151,7 @@ const Register = () => {
                   variant="contained"
                   color="primary"
                   fullWidth
+                  disabled={loading}
                 >
                   Login
                 </Button>
@@ -170,4 +164,4 @@ const Register = () => {
   );
 };
 
-export default Register;
+export default Login;

@@ -1,13 +1,11 @@
 import React, { useState } from "react";
 import {
   Avatar,
-  Box,
   Button,
   Container,
   Grid,
   IconButton,
   InputAdornment,
-  Link,
   TextField,
   Typography,
 } from "@mui/material";
@@ -16,9 +14,11 @@ import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 import { Formik } from "formik";
 import * as Yup from "yup";
 import Resim from "./avatar.png";
-import { useAuth } from "../contexts/AuthContext";
 import { auth } from "../auth/getAuth";
-import { createUserWithEmailAndPassword } from "firebase/auth";
+import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
+import { useNavigate } from "react-router-dom";
+import { AuthContext } from "../contexts/AuthContext";
+import { useContext } from "react";
 
 const signUpValidationSchema = Yup.object().shape({
   email: Yup.string().required("Email is required").email("Invalid Email"),
@@ -37,7 +37,8 @@ const Register = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [showPassword2, setShowPassword2] = useState(false);
   const [loading, setLoading] = useState();
-  const { signup } = useAuth();
+  const navigate = useNavigate();
+  const { currentUser } = useContext(AuthContext);
   const initialValues = {
     email: "",
     password: "",
@@ -57,12 +58,15 @@ const Register = () => {
   };
 
   const handleSubmit = async (values, { resetForm }) => {
+    setLoading(true);
     try {
-      setLoading(true);
       await createUserWithEmailAndPassword(auth, values.email, values.password);
+      await updateProfile(auth.currentUser, { displayName: values.username });
+      navigate("/");
     } catch (error) {
       console.log(error);
     }
+
     setLoading(false);
     resetForm();
     console.log(values.email);
@@ -102,7 +106,7 @@ const Register = () => {
         }) => (
           <form onSubmit={handleSubmit}>
             <Grid container spacing={3}>
-              {/* <Grid item xs={12}>
+              <Grid item xs={12}>
                 <TextField
                   name="username"
                   label="User Name"
@@ -114,7 +118,7 @@ const Register = () => {
                   error={touched.username && Boolean(errors.username)}
                   fullWidth
                 />
-              </Grid> */}
+              </Grid>
               <Grid item xs={12}>
                 <TextField
                   name="email"

@@ -1,10 +1,19 @@
 import React from "react";
-import { Navbar, Container, Nav } from "react-bootstrap";
+import { Navbar, Container, Nav, Button } from "react-bootstrap";
 import { Link } from "react-router-dom";
-import { useLocation, Private } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
+import { AuthContext } from "../contexts/AuthContext";
+import { useContext } from "react";
+import { signOut } from "firebase/auth";
+import { auth } from "../auth/getAuth";
 const FirstNavbar = () => {
   const path = useLocation().pathname;
-  console.log(path);
+  const { currentUser } = useContext(AuthContext);
+  const navigate = useNavigate();
+  const signOutFunc = async () => {
+    await signOut(auth);
+    navigate("login");
+  };
   return (
     <Navbar bg="dark" variant="dark">
       <Container>
@@ -36,8 +45,10 @@ const FirstNavbar = () => {
               {path === "/register" && "Login"}
               {path === "/login" && "Register"}
             </Link>
+            {currentUser && <h6>{currentUser.displayName}</h6>}
           </Navbar.Text>
         </Navbar.Collapse>
+        {currentUser && <Button onClick={signOutFunc}>Sign Out</Button>}
       </Container>
     </Navbar>
   );

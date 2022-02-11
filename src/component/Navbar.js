@@ -7,13 +7,14 @@ import { useContext } from "react";
 import { signOut } from "firebase/auth";
 import { auth } from "../auth/getAuth";
 const FirstNavbar = () => {
-  const path = useLocation().pathname;
+  let path = useLocation().pathname;
   const { currentUser } = useContext(AuthContext);
   const navigate = useNavigate();
   const signOutFunc = async () => {
     await signOut(auth);
-    navigate("login");
+    navigate("/login");
   };
+  console.log(path);
   return (
     <Navbar bg="dark" variant="dark">
       <Container>
@@ -32,8 +33,10 @@ const FirstNavbar = () => {
         <Navbar.Toggle />
         <Navbar.Collapse className="justify-content-end">
           <Navbar.Text>
+            {/* {!currentUser ? (path = "/login") : (path = "")} */}
             {path === "/login" && " Don't have an account "}
             {path === "/register" && "Already have an account "}
+
             <Link
               style={{
                 textDecoration: "none",

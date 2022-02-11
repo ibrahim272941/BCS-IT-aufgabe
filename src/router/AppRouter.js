@@ -5,6 +5,7 @@ import Register from "../pages/Register";
 import Login from "../pages/Login";
 import FirstNavbar from "../component/Navbar";
 import PrivateRoute from "./PrivateRoute";
+import AuthPage from "../pages/AuthPage";
 
 const AppRouter = () => {
   return (
@@ -14,8 +15,9 @@ const AppRouter = () => {
         <Route element={<PrivateRoute />}>
           <Route path="/" element={<MainPage />} />
         </Route>
-        <Route path="login" element={<Login />} />
-        <Route path="register" element={<Register />} />
+
+        <Route path="/register" element={<Register />} />
+        <Route path="/login" element={<Login />} />
       </Routes>
     </Router>
   );

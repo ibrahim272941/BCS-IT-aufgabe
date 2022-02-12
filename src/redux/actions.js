@@ -3,6 +3,7 @@ import { auth } from "../auth/getAuth";
 import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
+  signOut,
   updateProfile,
 } from "firebase/auth";
 const registerStart = () => ({
@@ -28,6 +29,22 @@ const loginFail = (error) => ({
   type: types.LOGIN_FAIL,
   payload: error,
 });
+const logoutStart = () => ({
+  type: types.LOGOUT_START,
+});
+const logoutSuccess = (user) => ({
+  type: types.LOGOUT_SUCCESS,
+  payload: user,
+});
+const logoutFail = (error) => ({
+  type: types.LOGOUT_FAIL,
+  payload: error,
+});
+
+export const persistUser = (user) => ({
+  type: types.PERSIST_USER,
+  payload: user,
+});
 
 export const registerFunc = (email, password, displayName) => {
   return function (dispatch) {
@@ -50,7 +67,20 @@ export const loginFunc = (email, password) => {
 
       dispatch(loginSuccess(auth));
     } catch (error) {
+      alert(error.message);
       dispatch(loginFail(error.message));
+    }
+  };
+};
+export const logoutFunc = () => {
+  return function (dispatch) {
+    try {
+      dispatch(logoutStart());
+      signOut(auth);
+
+      dispatch(logoutSuccess(auth));
+    } catch (error) {
+      dispatch(logoutFail(error.message));
     }
   };
 };

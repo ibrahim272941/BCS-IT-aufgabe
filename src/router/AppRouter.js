@@ -1,11 +1,10 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import MainPage from "../pages/MainPage";
 import Register from "../pages/Register";
 import Login from "../pages/Login";
 import FirstNavbar from "../component/Navbar";
 import PrivateRoute from "./PrivateRoute";
-import AuthPage from "../pages/AuthPage";
 
 const AppRouter = () => {
   return (

@@ -4,15 +4,17 @@ import { Link } from "react-router-dom";
 import { useLocation, useNavigate } from "react-router-dom";
 import { signOut } from "firebase/auth";
 import { auth } from "../auth/getAuth";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import { logoutFunc } from "../redux/actions";
 const FirstNavbar = () => {
   let path = useLocation().pathname;
   const { currentUser } = useSelector((state) => state.user);
+  const dispatch = useDispatch();
   // console.log(currentUser);
   const navigate = useNavigate();
-  const signOutFunc = async () => {
-    await signOut(auth);
-    navigate("/login");
+  const signOutFunc = () => {
+    return currentUser && dispatch(logoutFunc());
+    // navigate("/login");
   };
 
   return (
@@ -50,7 +52,7 @@ const FirstNavbar = () => {
             {/* {currentUser && <h6>{currentUser.displayName}</h6>} */}
           </Navbar.Text>
         </Navbar.Collapse>
-        {/* {currentUser && <Button onClick={signOutFunc}>Sign Out</Button>} */}
+        {currentUser && <Button onClick={signOutFunc}>Sign Out</Button>}
       </Container>
     </Navbar>
   );

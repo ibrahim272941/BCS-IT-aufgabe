@@ -14,9 +14,9 @@ import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 import { Formik } from "formik";
 import * as Yup from "yup";
 import Resim from "./avatar.png";
-import { signInWithEmailAndPassword } from "firebase/auth";
-import { auth } from "../auth/getAuth";
 import { useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { loginFunc } from "../redux/actions";
 
 const signUpValidationSchema = Yup.object().shape({
   email: Yup.string().required("Email is required").email("Invalid Email"),
@@ -26,6 +26,8 @@ const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState();
   const navigate = useNavigate();
+  const { currentUser } = useSelector((state) => state.user);
+  const dispatch = useDispatch();
 
   const initialValues = {
     username: "",
@@ -39,18 +41,11 @@ const Login = () => {
     setShowPassword(!showPassword);
   };
 
-  const handleSubmit = async (values, { resetForm }) => {
-    try {
-      setLoading(true);
-      await signInWithEmailAndPassword(auth, values.email, values.password);
-      navigate("/");
-    } catch (error) {
-      console.log(error);
-    }
-
-    setLoading(false);
+  const handleSubmit = (values, { resetForm }) => {
+    setLoading(true);
+    dispatch(loginFunc(values.email, values.password));
+    navigate("/");
     resetForm();
-    console.log(values.email);
   };
   return (
     <Container

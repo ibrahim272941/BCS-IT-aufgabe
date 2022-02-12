@@ -14,11 +14,9 @@ import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 import { Formik } from "formik";
 import * as Yup from "yup";
 import Resim from "./avatar.png";
-import { auth } from "../auth/getAuth";
-import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
-import { AuthContext } from "../contexts/AuthContext";
-import { useContext } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { registerFunc } from "../redux/actions";
 
 const signUpValidationSchema = Yup.object().shape({
   email: Yup.string().required("Email is required").email("Invalid Email"),
@@ -38,7 +36,9 @@ const Register = () => {
   const [showPassword2, setShowPassword2] = useState(false);
   const [loading, setLoading] = useState();
   const navigate = useNavigate();
-  const { currentUser } = useContext(AuthContext);
+
+  const { currentUser } = useSelector((state) => state.user);
+  const dispatch = useDispatch();
   const initialValues = {
     email: "",
     password: "",
@@ -57,19 +57,21 @@ const Register = () => {
     setShowPassword2(!showPassword2);
   };
 
+  // const handleSubmit = async (values, { resetForm }) => {
+  //   setLoading(true);
+  //   try {
+  //     await createUserWithEmailAndPassword(auth, values.email, values.password);
+  //     await updateProfile(auth.currentUser, { displayName: values.username });
+  //     navigate("/");
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // };
   const handleSubmit = async (values, { resetForm }) => {
     setLoading(true);
-    try {
-      await createUserWithEmailAndPassword(auth, values.email, values.password);
-      await updateProfile(auth.currentUser, { displayName: values.username });
-      navigate("/");
-    } catch (error) {
-      console.log(error);
-    }
-
-    setLoading(false);
+    dispatch(registerFunc(values.email, values.password, values.username));
+    navigate("/");
     resetForm();
-    console.log(values.email);
   };
   return (
     <Container

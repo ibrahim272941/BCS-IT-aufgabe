@@ -1,5 +1,5 @@
 import * as types from "./actionTypes";
-import { auth } from "../auth/getAuth";
+import { auth } from "../../auth/getAuth";
 import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
@@ -58,7 +58,7 @@ export const registerFunc = (email, password, displayName) => {
       .catch((error) => dispatch(registerFail(error.message)));
   };
 };
-export const loginFunc =  (email, password) => {
+export const loginFunc = (email, password) => {
   return function (dispatch) {
     dispatch(loginStart());
     signInWithEmailAndPassword(auth, email, password)

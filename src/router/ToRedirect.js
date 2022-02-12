@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+// import Spinner from "../assets/spinner.gif";
+import { Spinner } from "react-bootstrap";
 
 const ToRedirect = () => {
   const [count, setCount] = useState(4);
@@ -16,7 +18,12 @@ const ToRedirect = () => {
 
   return (
     <div>
-      <p>redirect to in {count} seconds</p>
+      <Spinner
+        style={{ width: "10rem", height: "10rem", marginTop: "10rem" }}
+        animation="border"
+        variant="warning"
+        size="lg"
+      />
     </div>
   );
 };

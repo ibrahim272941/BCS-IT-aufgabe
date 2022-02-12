@@ -41,9 +41,10 @@ const Login = () => {
     setShowPassword(!showPassword);
   };
 
-  const handleSubmit = (values, { resetForm }) => {
+  const handleSubmit = async (values, { resetForm }) => {
     setLoading(true);
     dispatch(loginFunc(values.email, values.password));
+
     navigate("/");
     resetForm();
   };

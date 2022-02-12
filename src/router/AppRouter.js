@@ -5,13 +5,18 @@ import Register from "../pages/Register";
 import Login from "../pages/Login";
 import FirstNavbar from "../component/Navbar";
 import PrivateRoute from "./PrivateRoute";
+import { useSelector } from "react-redux";
+import UserRoute from "./UserRoute";
 
 const AppRouter = () => {
+  const { currentUser } = useSelector((state) => state.user);
+
+  console.log(currentUser);
   return (
     <Router>
       <FirstNavbar />
       <Routes>
-        <Route element={<PrivateRoute />}>
+        <Route element={<UserRoute />}>
           <Route path="/" element={<MainPage />} />
         </Route>
 

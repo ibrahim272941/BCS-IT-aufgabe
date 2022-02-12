@@ -48,28 +48,24 @@ export const persistUser = (user) => ({
 
 export const registerFunc = (email, password, displayName) => {
   return function (dispatch) {
-    try {
-      dispatch(registerStart);
-      createUserWithEmailAndPassword(auth, email, password);
+    dispatch(registerStart());
+    createUserWithEmailAndPassword(auth, email, password)
+      .then(({ user }) => {
+        updateProfile(user, { displayName });
 
-      updateProfile(auth, { displayName: displayName });
-      dispatch(registerSuccess(auth));
-    } catch (error) {
-      dispatch(registerFail(error.message));
-    }
+        dispatch(registerSuccess(auth, user));
+      })
+      .catch((error) => dispatch(registerFail(error.message)));
   };
 };
-export const loginFunc = (email, password) => {
+export const loginFunc =  (email, password) => {
   return function (dispatch) {
-    try {
-      dispatch(loginStart());
-      signInWithEmailAndPassword(auth, email, password);
-
-      dispatch(loginSuccess(auth));
-    } catch (error) {
-      alert(error.message);
-      dispatch(loginFail(error.message));
-    }
+    dispatch(loginStart());
+    signInWithEmailAndPassword(auth, email, password)
+      .then(({ user }) => {
+        dispatch(loginSuccess(user));
+      })
+      .catch((error) => dispatch(alert(error.message)));
   };
 };
 export const logoutFunc = () => {

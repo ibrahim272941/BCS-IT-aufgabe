@@ -10,7 +10,7 @@ function CopyRight() {
       align="center"
     >
       {"Copyright © "}
-      <Link href="https://material-ui.com/">Ibrahim Coban</Link>{" "}
+      <Link href="https://github.com/ibrahim272941">Ibrahim Coban</Link>{" "}
       {new Date().getFullYear()}
       {"."}
     </Typography>

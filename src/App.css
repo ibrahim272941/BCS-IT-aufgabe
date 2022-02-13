@@ -39,6 +39,11 @@
 }
 
 .cont {
-  background-color: #1b1d20;
+  background-color: #212529;
   height: 100vh;
+}
+
+span {
+  margin-right: 1rem;
+  margin-left: 1rem;
 }

@@ -14,15 +14,22 @@ const MainNavbar = () => {
     <div className="container-fluid">
       <nav className="navbar navbar-expand-lg bg-dark d-flex justify-content-between">
         <div className="d-flex">
-          <NavLink to="/" className="btn btn-secondary">
-            Main Page
-          </NavLink>
-          <NavLink to="/invoice" className="btn btn-secondary">
-            New invoice
-          </NavLink>
-          <NavLink to="/about" className="btn btn-secondary">
-            About
-          </NavLink>
+          <div style={{ marginLeft: "1rem" }}>
+            <NavLink to="/" className="btn btn-secondary">
+              Main Page
+            </NavLink>
+          </div>
+          <div></div>
+          <span>
+            <NavLink to="/invoice" className="btn btn-secondary">
+              New invoice
+            </NavLink>
+          </span>
+          <div>
+            <NavLink to="/about" className="btn btn-secondary">
+              About
+            </NavLink>
+          </div>
         </div>
         <div className="d-flex p-1">
           <span className="m-1">

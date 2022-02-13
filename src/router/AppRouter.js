@@ -7,6 +7,7 @@ import FirstNavbar from "../component/Navbar";
 
 import { useSelector } from "react-redux";
 import UserRoute from "./UserRoute";
+import AddEditInvoice from "../moduls/AddEditInvoice";
 
 const AppRouter = () => {
   return (
@@ -14,6 +15,7 @@ const AppRouter = () => {
       <Routes>
         <Route element={<UserRoute />}>
           <Route path="/" element={<MainPage />} />
+          <Route path="/invoice" element={<AddEditInvoice />} />
         </Route>
 
         <Route path="/register" element={<Register />} />

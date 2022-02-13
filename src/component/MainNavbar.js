@@ -1,6 +1,4 @@
 import React from "react";
-import { signOut } from "firebase/auth";
-import { auth } from "../auth/getAuth";
 import { logoutFunc } from "../redux/auhtRedux/actions";
 import { useSelector, useDispatch } from "react-redux";
 import { Button } from "react-bootstrap";
@@ -15,7 +13,7 @@ const MainNavbar = () => {
   return (
     <div className="container-fluid">
       <nav className="navbar navbar-expand-lg bg-dark d-flex justify-content-between">
-        <div>
+        <div className="d-flex">
           <NavLink to="/" className="btn btn-secondary">
             Main Page
           </NavLink>

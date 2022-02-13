@@ -59,16 +59,6 @@ const Register = () => {
     setShowPassword2(!showPassword2);
   };
 
-  // const handleSubmit = async (values, { resetForm }) => {
-  //   setLoading(true);
-  //   try {
-  //     await createUserWithEmailAndPassword(auth, values.email, values.password);
-  //     await updateProfile(auth.currentUser, { displayName: values.username });
-  //     navigate("/");
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  // };
   const handleSubmit = async (values, { resetForm }) => {
     setLoading(true);
     dispatch(registerFunc(values.email, values.password, values.username));

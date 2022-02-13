@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { Spinner } from "react-bootstrap";
 
 const ToRedirect = () => {
-  const [count, setCount] = useState(4);
+  const [count, setCount] = useState(3);
   const navigate = useNavigate();
 
   useEffect(() => {

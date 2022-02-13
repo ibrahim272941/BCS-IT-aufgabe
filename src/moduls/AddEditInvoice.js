@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { database } from "../crud/firebaseConfig";
+import { database } from "../auth/getAuth";
 import { isEmpty } from "lodash";
 import {
   Avatar,
@@ -13,19 +13,19 @@ import {
 
 import { Formik } from "formik";
 import MainNavbar from "../component/MainNavbar";
+import { useNavigate } from "react-router-dom";
+import { Spinner } from "react-bootstrap";
+import { push, ref, set } from "firebase/database";
+import { useSelector } from "react-redux";
 
 const AddEditInvoice = () => {
-  const text = [
-    {
-      costumerName: "Costumer Name",
-    },
-    { costumerEmail: "Costumer Email" },
-    { costumerMobile: "Costumer Mobile" },
-    { costumerAddres: "Costumer Address" },
-    { productName: "Product Name" },
-    { productPrice: "Product Price" },
-    { productQuantity: "Quantity" },
-  ];
+  const {
+    displayName,
+    reloadUserInfo: { localId },
+  } = useSelector((state) => state.user.currentUser);
+  const navigate = useNavigate();
+  const [count, setCount] = useState(1);
+
   const initialValues = {
     costumerName: "",
     costumerEmail: "",
@@ -35,8 +35,22 @@ const AddEditInvoice = () => {
     productPrice: "",
     productQuantity: "",
   };
-  const [initial, setInitial] = useState(initialValues);
-  const handleSubmit = () => {};
+
+  const handleSubmit = async (values, { resetForm }, userId) => {
+    const userRef = ref(database, `${displayName}`);
+    const newUserRef = push(userRef);
+    set(newUserRef, {
+      costumerName: values.costumerName,
+      costumerEmail: values.costumerEmail,
+      costumerMobile: values.costumerMobile,
+      costumerAddres: values.costumerAddres,
+      productName: values.productName,
+      productPrice: values.productPrice,
+      productQuantity: values.productQuantity,
+    });
+    // navigate("/invoicelist");
+    resetForm();
+  };
   return (
     <>
       <MainNavbar />
@@ -51,116 +65,93 @@ const AddEditInvoice = () => {
             handleBlur,
           }) => (
             <form onSubmit={handleSubmit}>
-              {/* {text.map((item, i) => {
-                console.log(item);
-                return (
-                  <Grid key={i} item xs={12}>
-                    <TextField
-                      name="username"
-                      label={Object.values(item)}
-                      variant="outlined"
-                      value={values.username}
-                      onChange={handleChange}
-                      onBlur={handleBlur}
-                      helperText={touched.username && errors.username}
-                      error={touched.username && Boolean(errors.username)}
-                      fullWidth
-                    />
-                  </Grid>
-                );
-              })} */}
               <Grid container spacing={3}>
                 <Grid item xs={12}>
                   <TextField
+                    type="text"
                     name="costumerName"
                     label="Costumer Name"
                     variant="outlined"
-                    value={values.username}
+                    value={values.costumerName}
                     onChange={handleChange}
                     onBlur={handleBlur}
-                    helperText={touched.username && errors.username}
-                    error={touched.username && Boolean(errors.username)}
                     fullWidth
                   />
                 </Grid>
 
                 <Grid item xs={12}>
                   <TextField
+                    type="email"
                     name="costumerEmail"
                     label="Costumer Email"
                     variant="outlined"
-                    value={values.username}
+                    value={values.costumerEmail}
                     onChange={handleChange}
                     onBlur={handleBlur}
-                    helperText={touched.username && errors.username}
-                    error={touched.username && Boolean(errors.username)}
                     fullWidth
                   />
                 </Grid>
                 <Grid item xs={12}>
                   <TextField
-                    name="costumerMobile "
+                    type="tel"
+                    name="costumerMobile"
                     label="Costumer Mobile"
                     variant="outlined"
-                    value={values.username}
+                    value={values.costumerMobile}
                     onChange={handleChange}
                     onBlur={handleBlur}
-                    helperText={touched.username && errors.username}
-                    error={touched.username && Boolean(errors.username)}
+                    // helperText={touched.costumerMobile && errors.costumerMobile}
+                    // error={
+                    //   touched.costumerMobile && Boolean(errors.costumerMobile)
+                    // }
                     fullWidth
                   />
                 </Grid>
                 <Grid item xs={12}>
                   <TextField
+                    type="text"
                     name="costumerAddres"
                     label="Costumer Address"
                     variant="outlined"
-                    value={values.username}
+                    value={values.costumerAddres}
                     onChange={handleChange}
                     onBlur={handleBlur}
-                    helperText={touched.username && errors.username}
-                    error={touched.username && Boolean(errors.username)}
                     fullWidth
                   />
                 </Grid>
                 <Grid item xs={12}>
                   <TextField
+                    type="text"
                     name="productName"
                     label="Product Name"
                     variant="outlined"
-                    value={values.email}
+                    value={values.productName}
                     onChange={handleChange}
                     onBlur={handleBlur}
-                    helperText={touched.email && errors.email}
-                    error={touched.email && Boolean(errors.email)}
                     fullWidth
                   />
                 </Grid>
                 <Grid item xs={12}>
                   <TextField
                     type="number"
-                    name="productPrice: "
+                    name="productPrice"
                     label="Product Price"
                     variant="outlined"
-                    value={values.password}
+                    value={values.productPrice}
                     onChange={handleChange}
                     onBlur={handleBlur}
-                    helperText={touched.password && errors.password}
-                    error={touched.password && Boolean(errors.password)}
                     fullWidth
                   />
                 </Grid>
                 <Grid item xs={12}>
                   <TextField
                     type="number"
-                    name=" productQuantity "
+                    name="productQuantity"
                     label="Quantity"
                     variant="outlined"
-                    value={values.password2}
+                    value={values.productQuantity}
                     onChange={handleChange}
                     onBlur={handleBlur}
-                    helperText={touched.password2 && errors.password2}
-                    error={touched.password2 && Boolean(errors.password2)}
                     fullWidth
                   />
                 </Grid>

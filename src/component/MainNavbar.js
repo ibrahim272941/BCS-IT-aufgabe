@@ -26,8 +26,8 @@ const MainNavbar = () => {
             </NavLink>
           </span>
           <div>
-            <NavLink to="/about" className="btn btn-secondary">
-              About
+            <NavLink to="/invoicelist" className="btn btn-secondary">
+              Invoice List
             </NavLink>
           </div>
         </div>

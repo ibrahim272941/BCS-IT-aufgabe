@@ -9,11 +9,18 @@ import TablePagination from "@mui/material/TablePagination";
 import TableRow from "@mui/material/TableRow";
 import { database } from "../auth/getAuth";
 import { useEffect } from "react";
-import { child, get, getDatabase, onValue, ref } from "firebase/database";
+import {
+  child,
+  get,
+  getDatabase,
+  onValue,
+  ref,
+  remove,
+} from "firebase/database";
 import { useSelector } from "react-redux";
 import MainNavbar from "../component/MainNavbar";
-import ModeEditOutlineSharpIcon from "@mui/icons-material/ModeEditOutlineSharp";
-import DeleteSharpIcon from "@mui/icons-material/DeleteSharp";
+
+import { Link } from "react-router-dom";
 
 const columns = [
   { id: "name", label: "Costumer Name", minWidth: 100 },
@@ -88,6 +95,7 @@ export default function StickyHeadTable() {
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
   const [data, setData] = React.useState({});
+
   const {
     displayName,
     reloadUserInfo: { localId },
@@ -95,7 +103,7 @@ export default function StickyHeadTable() {
 
   useEffect(() => {
     const dbRef = ref(database);
-    get(child(dbRef, `${displayName}`))
+    get(child(dbRef, `${localId}`))
       .then((snapshot) => {
         if (snapshot.exists()) {
           setData({ ...snapshot.val() });
@@ -107,7 +115,14 @@ export default function StickyHeadTable() {
         console.error(error);
       });
   }, []);
-  console.log(Object.keys(data).length);
+
+  const deleteInvoice = (id) => {
+    if (window.confirm("Are you sure to delete the invoice")) {
+      remove(ref(database, `${localId}/${id}`));
+      window.location.reload();
+    }
+  };
+
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
   };
@@ -147,8 +162,24 @@ export default function StickyHeadTable() {
                     <TableCell>{data[id].productName}</TableCell>
                     <TableCell>{data[id].productPrice}</TableCell>
                     <TableCell>{data[id].productQuantity}</TableCell>
-                    <ModeEditOutlineSharpIcon style={{ marginRight: "1rem" }} />
-                    <DeleteSharpIcon style={{ color: "red" }} />
+                    <Link to={`/update/${id}`}>
+                      <a className="btn text-primary">
+                        <i className="fas fa-pencil" />
+                      </a>
+                    </Link>
+
+                    <a
+                      className="btn text-danger"
+                      onClick={() => deleteInvoice(id)}
+                    >
+                      <i className="fas fa-trash-alt" />
+                    </a>
+
+                    <Link to={`/update/${id}`}>
+                      <a className="btn text-primary">
+                        <i className="fas fa-eye" />
+                      </a>
+                    </Link>
                   </TableRow>
                 );
               })}

@@ -35,7 +35,7 @@ const signUpValidationSchema = Yup.object().shape({
 });
 const Register = () => {
   const [showPassword, setShowPassword] = useState(false);
-  const [showPassword2, setShowPassword2] = useState(false);
+
   const [loading, setLoading] = useState();
   const navigate = useNavigate();
 
@@ -52,18 +52,11 @@ const Register = () => {
   const handleMouseDownPassword = () => {
     setShowPassword(!showPassword);
   };
-  const handleClickShowPassword2 = () => {
-    setShowPassword2(!showPassword2);
-  };
-  const handleMouseDownPassword2 = () => {
-    setShowPassword2(!showPassword2);
-  };
 
-  const handleSubmit = async (values, { resetForm }) => {
+  const handleSubmit = async (values) => {
     setLoading(true);
     dispatch(registerFunc(values.email, values.password, values.username));
-    navigate("/");
-    resetForm();
+    currentUser && navigate("/");
   };
   return (
     <div className="container-fluid cont">
@@ -162,7 +155,7 @@ const Register = () => {
                     }}
                   />
                 </Grid>
-                <Grid item xs={12}>
+                {/* <Grid item xs={12}>
                   <TextField
                     type={showPassword2 ? "text" : "password"}
                     name="password2"
@@ -192,7 +185,7 @@ const Register = () => {
                       ),
                     }}
                   />
-                </Grid>
+                </Grid> */}
                 <Grid item xs={12}>
                   <Button
                     type="submit"

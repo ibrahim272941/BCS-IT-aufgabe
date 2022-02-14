@@ -3,6 +3,7 @@ import * as types from "./actionTypes";
 const initialState = {
   loading: false,
   currentUser: null,
+  isLogin: false,
   error: null,
 };
 
@@ -19,6 +20,7 @@ const userReducer = (state = initialState, action) => {
       return {
         ...state,
         currentUser: null,
+        isLogin: false,
       };
     case types.REGISTER_SUCCESS:
     case types.LOGIN_SUCCESS:
@@ -26,6 +28,7 @@ const userReducer = (state = initialState, action) => {
         ...state,
         loading: false,
         currentUser: action.payload,
+        isLogin: true,
       };
     case types.REGISTER_FAIL:
     case types.LOGIN_FAIL:
@@ -34,12 +37,14 @@ const userReducer = (state = initialState, action) => {
         ...state,
         loading: false,
         error: action.payload,
+        isLogin: false,
       };
     case types.PERSIST_USER:
       return {
         ...state,
         loading: false,
         currentUser: action.payload,
+        isLogin: !!action.payload,
       };
     default:
       return state;

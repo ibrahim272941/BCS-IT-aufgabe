@@ -24,7 +24,8 @@ const AddEditInvoice = () => {
     reloadUserInfo: { localId },
   } = useSelector((state) => state.user.currentUser);
   const navigate = useNavigate();
-  const [count, setCount] = useState(1);
+  const { currentUser } = useSelector((state) => state.user);
+  console.log(currentUser);
 
   const initialValues = {
     costumerName: "",
@@ -36,8 +37,8 @@ const AddEditInvoice = () => {
     productQuantity: "",
   };
 
-  const handleSubmit = async (values, { resetForm }, userId) => {
-    const userRef = ref(database, `${displayName}`);
+  const handleSubmit = async (values, userId) => {
+    const userRef = ref(database, `${localId}`, userId);
     const newUserRef = push(userRef);
     set(newUserRef, {
       costumerName: values.costumerName,
@@ -48,8 +49,7 @@ const AddEditInvoice = () => {
       productPrice: values.productPrice,
       productQuantity: values.productQuantity,
     });
-    // navigate("/invoicelist");
-    resetForm();
+    navigate("/invoicelist");
   };
   return (
     <>

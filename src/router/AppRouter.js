@@ -1,5 +1,11 @@
-import React, { useEffect } from "react";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  useNavigate,
+  Navigate,
+} from "react-router-dom";
 import MainPage from "../pages/MainPage";
 import Register from "../pages/Register";
 import Login from "../pages/Login";
@@ -9,8 +15,10 @@ import { useSelector } from "react-redux";
 import UserRoute from "./UserRoute";
 import AddEditInvoice from "../moduls/AddEditInvoice";
 import InvoiceList from "../moduls/InvoiceList";
+import AuthRouter from "./AuthRouter";
 
 const AppRouter = () => {
+  const { isLogin } = useSelector((state) => state.user);
   return (
     <Router>
       <Routes>
@@ -20,8 +28,10 @@ const AppRouter = () => {
           <Route path="invoicelist" element={<InvoiceList />} />
         </Route>
 
-        <Route path="/register" element={<Register />} />
-        <Route path="/login" element={<Login />} />
+        <Route element={<AuthRouter />}>
+          <Route path="/register" element={<Register />} />
+          <Route path="/login" element={<Login />} />
+        </Route>
       </Routes>
     </Router>
   );

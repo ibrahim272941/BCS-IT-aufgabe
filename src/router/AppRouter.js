@@ -18,13 +18,13 @@ import InvoiceList from "../moduls/InvoiceList";
 import AuthRouter from "./AuthRouter";
 
 const AppRouter = () => {
-  const { isLogin } = useSelector((state) => state.user);
   return (
     <Router>
       <Routes>
         <Route element={<UserRoute />}>
           <Route path="/" element={<MainPage />} />
           <Route path="/invoice" element={<AddEditInvoice />} />
+          <Route path="/update/:id" element={<AddEditInvoice />} />
           <Route path="invoicelist" element={<InvoiceList />} />
         </Route>
 

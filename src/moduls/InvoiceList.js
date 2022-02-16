@@ -56,6 +56,13 @@ const columns = [
     format: (value) => value.toFixed(2),
   },
   {
+    id: "totalAmount",
+    label: "Total Amount",
+    minWidth: 170,
+    align: "left",
+    format: (value) => value.toFixed(2),
+  },
+  {
     id: "action",
     label: "Actions",
     minWidth: 170,
@@ -82,13 +89,14 @@ export default function StickyHeadTable() {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(getInvoiceSucces(localId));
+    dispatch(getInvoiceStart());
+    dispatch(getInvoiceSucces());
     const userRef = ref(database, `${localId}`);
     onValue(query(userRef), (snapshot) => {
       setData({ ...snapshot.val() });
     });
   }, []);
-  onLoadInvoiceAsync(localId);
+
   // useEffect(() => {
   //   const dbRef = ref(database);
   //   get(child(dbRef, `${localId}`))
@@ -150,6 +158,7 @@ export default function StickyHeadTable() {
                     <TableCell>{data[id].productName}</TableCell>
                     <TableCell>{data[id].productPrice}</TableCell>
                     <TableCell>{data[id].productQuantity}</TableCell>
+                    <TableCell>{data[id].totalAmount}€</TableCell>
                     <Link to={`/update/${id}`}>
                       <a className="btn text-primary">
                         <i className="fas fa-pencil" />

@@ -10,6 +10,7 @@ import { child, get, push, ref, set, update } from "firebase/database";
 import { useSelector } from "react-redux";
 
 const AddEditInvoice = () => {
+  const VAT = 0.19;
   const values = {
     costumerName: "",
     costumerEmail: "",
@@ -18,14 +19,16 @@ const AddEditInvoice = () => {
     productName: "",
     productPrice: "",
     productQuantity: "",
+    totalAmount: "",
   };
   const [data, setData] = useState({});
   const [initialValues, setValues] = useState(values);
+  const [total, setTotal] = useState();
   const {
     displayName,
     reloadUserInfo: { localId },
   } = useSelector((state) => state.user.currentUser);
-  const {
+  let {
     costumerName,
     costumerEmail,
     costumerMobile,
@@ -33,6 +36,7 @@ const AddEditInvoice = () => {
     productName,
     productPrice,
     productQuantity,
+    totalAmount,
   } = initialValues;
 
   const navigate = useNavigate();
@@ -76,11 +80,15 @@ const AddEditInvoice = () => {
   };
   const handleChange = (e) => {
     e.preventDefault();
+
     let { name, value } = e.target;
+
     setValues({ ...initialValues, [name]: value });
   };
 
   const handleBlur = () => {};
+  const handleBlur2 = (e) => {};
+
   return (
     <>
       <MainNavbar />
@@ -168,6 +176,26 @@ const AddEditInvoice = () => {
                 value={productQuantity}
                 onChange={handleChange}
                 onBlur={handleBlur}
+                fullWidth
+              />
+            </Grid>
+            <Grid item xs={12}>
+              {}
+              <TextField
+                type="number"
+                name="totalAmount"
+                label="Total amount"
+                variant="standard"
+                value={
+                  productQuantity && productPrice
+                    ? (totalAmount = parseFloat(
+                        productQuantity *
+                          (parseFloat(productPrice) + productPrice * VAT)
+                      ).toFixed(2))
+                    : totalAmount
+                }
+                onChange={handleChange}
+                onBlur={handleBlur2}
                 fullWidth
               />
             </Grid>

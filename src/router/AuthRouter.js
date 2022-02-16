@@ -1,6 +1,7 @@
 import React from "react";
 import { useSelector } from "react-redux";
 import { Outlet } from "react-router-dom";
+import Login from "../pages/Login";
 import ToRedirect from "./ToRedirect";
 
 const AuthRouter = () => {

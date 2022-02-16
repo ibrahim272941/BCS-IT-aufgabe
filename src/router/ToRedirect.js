@@ -14,7 +14,7 @@ const ToRedirect = ({ nav }) => {
 
     count === 0 && navigate(nav);
     return () => clearInterval(interval);
-  }, [count, navigate]);
+  }, [count, navigate, nav]);
 
   return (
     <div>

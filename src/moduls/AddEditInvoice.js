@@ -92,7 +92,7 @@ const AddEditInvoice = () => {
                 type="text"
                 name="costumerName"
                 label="Costumer Name"
-                variant="outlined"
+                variant="standard"
                 value={costumerName}
                 onChange={handleChange}
                 fullWidth
@@ -104,7 +104,7 @@ const AddEditInvoice = () => {
                 type="email"
                 name="costumerEmail"
                 label="Costumer Email"
-                variant="outlined"
+                variant="standard"
                 value={costumerEmail}
                 onChange={handleChange}
                 onBlur={handleBlur}
@@ -116,7 +116,7 @@ const AddEditInvoice = () => {
                 type="tel"
                 name="costumerMobile"
                 label="Costumer Mobile"
-                variant="outlined"
+                variant="standard"
                 value={costumerMobile}
                 onChange={handleChange}
                 onBlur={handleBlur}
@@ -128,7 +128,7 @@ const AddEditInvoice = () => {
                 type="text"
                 name="costumerAddres"
                 label="Costumer Address"
-                variant="outlined"
+                variant="standard"
                 value={costumerAddres}
                 onChange={handleChange}
                 onBlur={handleBlur}
@@ -140,7 +140,7 @@ const AddEditInvoice = () => {
                 type="text"
                 name="productName"
                 label="Product Name"
-                variant="outlined"
+                variant="standard"
                 value={productName}
                 onChange={handleChange}
                 onBlur={handleBlur}
@@ -152,7 +152,7 @@ const AddEditInvoice = () => {
                 type="number"
                 name="productPrice"
                 label="Product Price"
-                variant="outlined"
+                variant="standard"
                 value={productPrice}
                 onChange={handleChange}
                 onBlur={handleBlur}
@@ -164,7 +164,7 @@ const AddEditInvoice = () => {
                 type="number"
                 name="productQuantity"
                 label="Quantity"
-                variant="outlined"
+                variant="standard"
                 value={productQuantity}
                 onChange={handleChange}
                 onBlur={handleBlur}

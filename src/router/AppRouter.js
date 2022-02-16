@@ -1,17 +1,9 @@
-import React, { useEffect, useState } from "react";
-import {
-  BrowserRouter as Router,
-  Routes,
-  Route,
-  useNavigate,
-  Navigate,
-} from "react-router-dom";
+import React from "react";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import MainPage from "../pages/MainPage";
 import Register from "../pages/Register";
 import Login from "../pages/Login";
-import FirstNavbar from "../component/Navbar";
 
-import { useSelector } from "react-redux";
 import UserRoute from "./UserRoute";
 import AddEditInvoice from "../moduls/AddEditInvoice";
 import InvoiceList from "../moduls/InvoiceList";

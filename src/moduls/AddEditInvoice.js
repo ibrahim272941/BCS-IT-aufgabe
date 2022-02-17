@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { database } from "../auth/getAuth";
 import { isEmpty } from "lodash";
-import { Button, Grid, TextField } from "@mui/material";
+import { Button, Grid, TextField, Typography } from "@mui/material";
 
 import MainNavbar from "../component/MainNavbar";
 import { useNavigate, useParams } from "react-router-dom";
@@ -11,7 +11,7 @@ import { useSelector } from "react-redux";
 
 const AddEditInvoice = () => {
   const VAT = 0.19;
-  const values = {
+  let values = {
     costumerName: "",
     costumerEmail: "",
     costumerMobile: "",
@@ -23,7 +23,7 @@ const AddEditInvoice = () => {
   };
   const [data, setData] = useState({});
   const [initialValues, setValues] = useState(values);
-  const [total, setTotal] = useState();
+
   const {
     displayName,
     reloadUserInfo: { localId },
@@ -38,7 +38,7 @@ const AddEditInvoice = () => {
     productQuantity,
     totalAmount,
   } = initialValues;
-
+  const [total, setTotal] = useState(0);
   const navigate = useNavigate();
 
   const { id } = useParams();
@@ -86,9 +86,6 @@ const AddEditInvoice = () => {
     setValues({ ...initialValues, [name]: value });
   };
 
-  const handleBlur = () => {};
-  const handleBlur2 = (e) => {};
-
   return (
     <>
       <MainNavbar />
@@ -115,7 +112,6 @@ const AddEditInvoice = () => {
                 variant="standard"
                 value={costumerEmail}
                 onChange={handleChange}
-                onBlur={handleBlur}
                 fullWidth
               />
             </Grid>
@@ -127,7 +123,6 @@ const AddEditInvoice = () => {
                 variant="standard"
                 value={costumerMobile}
                 onChange={handleChange}
-                onBlur={handleBlur}
                 fullWidth
               />
             </Grid>
@@ -139,7 +134,6 @@ const AddEditInvoice = () => {
                 variant="standard"
                 value={costumerAddres}
                 onChange={handleChange}
-                onBlur={handleBlur}
                 fullWidth
               />
             </Grid>
@@ -151,7 +145,6 @@ const AddEditInvoice = () => {
                 variant="standard"
                 value={productName}
                 onChange={handleChange}
-                onBlur={handleBlur}
                 fullWidth
               />
             </Grid>
@@ -163,7 +156,6 @@ const AddEditInvoice = () => {
                 variant="standard"
                 value={productPrice}
                 onChange={handleChange}
-                onBlur={handleBlur}
                 fullWidth
               />
             </Grid>
@@ -175,7 +167,6 @@ const AddEditInvoice = () => {
                 variant="standard"
                 value={productQuantity}
                 onChange={handleChange}
-                onBlur={handleBlur}
                 fullWidth
               />
             </Grid>
@@ -186,19 +177,15 @@ const AddEditInvoice = () => {
                 name="totalAmount"
                 label="Total amount"
                 variant="standard"
-                value={
-                  productQuantity && productPrice
-                    ? (totalAmount = parseFloat(
-                        productQuantity *
-                          (parseFloat(productPrice) + productPrice * VAT)
-                      ).toFixed(2))
-                    : totalAmount
-                }
+                value={parseFloat(
+                  productQuantity *
+                    (parseFloat(productPrice) + productPrice * VAT)
+                ).toFixed(2)}
                 onChange={handleChange}
-                onBlur={handleBlur2}
                 fullWidth
               />
             </Grid>
+
             <Grid item xs={12}>
               <Button
                 type="submit"

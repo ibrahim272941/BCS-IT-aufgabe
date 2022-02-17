@@ -84,13 +84,13 @@ export default function StickyHeadTable() {
     displayName,
     reloadUserInfo: { localId },
   } = useSelector((state) => state.user.currentUser);
-  const invoice = useSelector((state) => state.invoice);
-  console.log(invoice);
-  const dispatch = useDispatch();
+  // const invoice = useSelector((state) => state.invoice);
+  // console.log(invoice);
+  // const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(getInvoiceStart());
-    dispatch(getInvoiceSucces());
+    // dispatch(getInvoiceStart());
+    // dispatch(getInvoiceSucces());
     const userRef = ref(database, `${localId}`);
     onValue(query(userRef), (snapshot) => {
       setData({ ...snapshot.val() });
@@ -111,7 +111,7 @@ export default function StickyHeadTable() {
   //       console.error(error);
   //     });
   // }, []);
-
+  console.log(data);
   const deleteInvoice = (id) => {
     if (window.confirm("Are you sure to delete the invoice")) {
       remove(ref(database, `${localId}/${id}`));
@@ -158,25 +158,28 @@ export default function StickyHeadTable() {
                     <TableCell>{data[id].productName}</TableCell>
                     <TableCell>{data[id].productPrice}</TableCell>
                     <TableCell>{data[id].productQuantity}</TableCell>
-                    <TableCell>{data[id].totalAmount}€</TableCell>
-                    <Link to={`/update/${id}`}>
-                      <a className="btn text-primary">
-                        <i className="fas fa-pencil" />
-                      </a>
-                    </Link>
+                    <TableCell>{data[id].totalAmount.slice(0, -1)}€</TableCell>
+                    <TableCell>
+                      <Link to={`/update/${id}`}>
+                        <p className="btn text-primary">
+                          <i className="fas fa-pencil" />
+                        </p>
+                      </Link>
+                      <Link to="/invoicelist">
+                        <p
+                          className="btn text-danger"
+                          onClick={() => deleteInvoice(id)}
+                        >
+                          <i className="fas fa-trash-alt" />
+                        </p>
+                      </Link>
 
-                    <a
-                      className="btn text-danger"
-                      onClick={() => deleteInvoice(id)}
-                    >
-                      <i className="fas fa-trash-alt" />
-                    </a>
-
-                    <Link to={`/update/${id}`}>
-                      <a className="btn text-primary">
-                        <i className="fas fa-eye" />
-                      </a>
-                    </Link>
+                      <Link to={`/update/${id}`}>
+                        <p className="btn text-primary">
+                          <i className="fas fa-eye" />
+                        </p>
+                      </Link>
+                    </TableCell>
                   </TableRow>
                 );
               })}

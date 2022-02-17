@@ -8,7 +8,7 @@ import UserRoute from "./UserRoute";
 import AddEditInvoice from "../moduls/AddEditInvoice";
 import InvoiceList from "../moduls/InvoiceList";
 import AuthRouter from "./AuthRouter";
-import { ViewInvoice } from "../moduls/MyDocument";
+import ViewInvoice from "../moduls/ViewInvoice";
 
 const AppRouter = () => {
   return (
@@ -19,7 +19,7 @@ const AppRouter = () => {
           <Route path="/invoice" element={<AddEditInvoice />} />
           <Route path="/update/:id" element={<AddEditInvoice />} />
           <Route path="invoicelist" element={<InvoiceList />} />
-          {/* <Route path="view/:id" element={<ViewInvoice />} /> */}
+          <Route path="view/:id" element={<ViewInvoice />} />
         </Route>
 
         <Route element={<AuthRouter />}>

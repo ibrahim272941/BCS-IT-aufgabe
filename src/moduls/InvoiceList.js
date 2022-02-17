@@ -174,7 +174,7 @@ export default function StickyHeadTable() {
                         </p>
                       </Link>
 
-                      <Link to={`/update/${id}`}>
+                      <Link to={`/view/${id}`}>
                         <p className="btn text-primary">
                           <i className="fas fa-eye" />
                         </p>

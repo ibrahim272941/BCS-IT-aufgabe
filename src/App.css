@@ -1,5 +1,17 @@
 .App {
-  text-align: center;
+
+  text-decoration: none;
+  list-style-type: none;
+}
+
+.Invoice ul li {
+
+  list-style-type: none;
+}
+
+.Invoice {
+
+  overflow: hidden;
 }
 
 .App-logo {

@@ -5,10 +5,11 @@ import { database } from "../../auth/getAuth";
 import { getInvoiceFail, getInvoiceSucces } from "./actions";
 import * as types from "./actionsTypes";
 
-export function* onLoadInvoiceAsync({ localId }) {
+export function* onLoadInvoiceAsync(action) {
   let invoice;
   try {
-    const userRef = ref(database, `${localId}`);
+    const { id } = action.payload;
+    const userRef = ref(database, `${id}`);
     invoice = yield;
     onValue(query(userRef), (snapshot) => {
       snapshot.val();

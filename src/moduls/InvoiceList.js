@@ -84,13 +84,13 @@ export default function StickyHeadTable() {
     displayName,
     reloadUserInfo: { localId },
   } = useSelector((state) => state.user.currentUser);
-  // const invoice = useSelector((state) => state.invoice);
-  // console.log(invoice);
-  // const dispatch = useDispatch();
+  const invoice = useSelector((state) => state.invoice);
+  console.log(invoice);
+  const dispatch = useDispatch();
 
   useEffect(() => {
-    // dispatch(getInvoiceStart());
-    // dispatch(getInvoiceSucces());
+    dispatch(getInvoiceStart(localId));
+
     const userRef = ref(database, `${localId}`);
     onValue(query(userRef), (snapshot) => {
       setData({ ...snapshot.val() });
@@ -111,7 +111,7 @@ export default function StickyHeadTable() {
   //       console.error(error);
   //     });
   // }, []);
-  console.log(data);
+
   const deleteInvoice = (id) => {
     if (window.confirm("Are you sure to delete the invoice")) {
       remove(ref(database, `${localId}/${id}`));
@@ -158,7 +158,7 @@ export default function StickyHeadTable() {
                     <TableCell>{data[id].productName}</TableCell>
                     <TableCell>{data[id].productPrice}</TableCell>
                     <TableCell>{data[id].productQuantity}</TableCell>
-                    <TableCell>{data[id].totalAmount.slice(0, -1)}€</TableCell>
+                    <TableCell>{data[id].totalAmount}€</TableCell>
                     <TableCell>
                       <Link to={`/update/${id}`}>
                         <p className="btn text-primary">

@@ -1,7 +1,8 @@
 import * as types from "./actionsTypes";
 
-export const getInvoiceStart = () => ({
+export const getInvoiceStart = (id) => ({
   type: types.GET_INVOICE_START,
+  payload: { id },
 });
 export const getInvoiceSucces = (invoice) => ({
   type: types.GET_INVOICE_SUCCESS,

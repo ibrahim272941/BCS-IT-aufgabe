@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import { database } from "../auth/getAuth";
 import { isEmpty } from "lodash";
 import { Button, Grid, TextField, Typography } from "@mui/material";
@@ -64,6 +64,12 @@ const AddEditInvoice = () => {
       setValues({ ...data[id] });
     }
   }, [id, data]);
+  useMemo(() => {
+    const calc = parseFloat(
+      productQuantity * (parseFloat(productPrice) + productPrice * VAT)
+    ).toFixed(2);
+    setValues((prev) => ({ ...prev, totalAmount: calc }));
+  }, [productPrice, productQuantity]);
 
   const handleSubmit = async (userId) => {
     if (isEmpty(id)) {
@@ -83,7 +89,8 @@ const AddEditInvoice = () => {
 
     let { name, value } = e.target;
 
-    setValues({ ...initialValues, [name]: value });
+    // setValues({ ...initialValues, [name]: value });
+    setValues((prev) => ({ ...prev, [name]: value }));
   };
 
   return (
@@ -177,10 +184,7 @@ const AddEditInvoice = () => {
                 name="totalAmount"
                 label="Total amount"
                 variant="standard"
-                value={parseFloat(
-                  productQuantity *
-                    (parseFloat(productPrice) + productPrice * VAT)
-                ).toFixed(2)}
+                value={totalAmount}
                 onChange={handleChange}
                 fullWidth
               />

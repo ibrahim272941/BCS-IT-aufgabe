@@ -1,5 +1,5 @@
 .App {
-
+  align-items: center;
   text-decoration: none;
   list-style-type: none;
 }
@@ -10,8 +10,16 @@
 }
 
 .Invoice {
-
+  width: 60%;
   overflow: hidden;
+}
+
+.footer p {
+  font-size: .8rem;
+}
+
+.footer {
+  line-height: .2rem;
 }
 
 .App-logo {

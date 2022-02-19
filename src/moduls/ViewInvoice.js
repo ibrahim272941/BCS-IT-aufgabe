@@ -44,7 +44,15 @@ const ViewInvoice = () => {
                 <button className="btn btn-success">Download</button>
               </p>
               <p>
-                <button className="btn btn-primary">Send</button>
+                <button className="btn btn-primary">
+                  <a
+                    href={`mailto:${data.costumerEmail}?subject=my report&body=see attachment&attachment=C:
+                      Users/ibrahim/Desktop/Aufgabe.pdf
+                    `}
+                  >
+                    Send
+                  </a>
+                </button>
               </p>
             </div>
           </div>
@@ -76,7 +84,8 @@ const ViewInvoice = () => {
               {id.substring(1)}
             </p>
             <p>
-              <span className="fw-bold">Invoice Date</span>
+              <span className="fw-bold">Invoice Date :</span>
+              {new Date().toJSON().slice(0, 10)}
             </p>
           </div>
         </article>
@@ -108,8 +117,8 @@ const ViewInvoice = () => {
         </section> */}
         {/*End of Notes*/}
         {/*Footer */}
-        <div className="d-flex   align-items-center justify-content-center mt-5">
-          <div className="footer w-50">
+        <div className="d-flex justify-content-end  mt-5">
+          <div className="footer w-25  d-flex flex-column flex-end">
             <p>BCS - IT</p>
             <p>Solinger Str. 24 , 40764 Langenfeld</p>
             <p>bcs-it@gmail.com</p>

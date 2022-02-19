@@ -47,9 +47,9 @@ export const persistUser = (user) => ({
 });
 
 export const registerFunc = (email, password, displayName) => {
-  return function (dispatch) {
+  return async function (dispatch) {
     dispatch(registerStart());
-    createUserWithEmailAndPassword(auth, email, password)
+    await createUserWithEmailAndPassword(auth, email, password)
       .then(({ user }) => {
         updateProfile(user, { displayName });
 
@@ -59,13 +59,16 @@ export const registerFunc = (email, password, displayName) => {
   };
 };
 export const loginFunc = (email, password) => {
-  return function (dispatch) {
+  return async function (dispatch) {
     dispatch(loginStart());
-    signInWithEmailAndPassword(auth, email, password)
+    await signInWithEmailAndPassword(auth, email, password)
       .then(({ user }) => {
         dispatch(loginSuccess(user));
       })
-      .catch((error) => dispatch(alert(error.message)));
+      .catch((error) => {
+        loginFail(error.message);
+        dispatch(alert(error.message));
+      });
   };
 };
 export const logoutFunc = () => {

@@ -4,16 +4,13 @@ import "./index.css";
 import App from "./App";
 
 import store from "./redux/auhtRedux/store";
-import mainstore from "./redux/mainredux/mainstore";
+import mainStore from "./redux/mainredux/mainstore";
 import { Provider } from "react-redux";
 
 ReactDOM.render(
   <React.StrictMode>
     <Provider store={store}>
       <App />
-
-      {/* <AuthProvider>
-      </AuthProvider> */}
     </Provider>
   </React.StrictMode>,
   document.getElementById("root")

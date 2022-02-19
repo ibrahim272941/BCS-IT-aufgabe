@@ -16,6 +16,7 @@ import MainNavbar from "../component/MainNavbar";
 import { Link } from "react-router-dom";
 import { getInvoiceStart, getInvoiceSucces } from "../redux/mainredux/actions";
 import { onLoadInvoiceAsync } from "../redux/mainredux/sagas";
+import { useFetch } from "../redux/mainredux/crudFunctions";
 
 const columns = [
   { id: "name", label: "Costumer Name", minWidth: 100 },
@@ -78,23 +79,24 @@ function createData(name, code, population, size) {
 export default function StickyHeadTable() {
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
-  const [data, setData] = React.useState({});
+  // const [data2, setData] = React.useState({});
+  const data = useFetch();
 
   const {
     displayName,
     reloadUserInfo: { localId },
   } = useSelector((state) => state.user.currentUser);
-  const invoice = useSelector((state) => state.invoice);
-  console.log(invoice);
+  const data2 = useSelector((state) => state.invoice);
+  console.log(data2);
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(getInvoiceStart(localId));
+    dispatch(getInvoiceStart());
 
-    const userRef = ref(database, `${localId}`);
-    onValue(query(userRef), (snapshot) => {
-      setData({ ...snapshot.val() });
-    });
+    // const userRef = ref(database, `${localId}`);
+    // onValue(query(userRef), (snapshot) => {
+    //   setData({ ...snapshot.val() });
+    // });
   }, []);
 
   // useEffect(() => {

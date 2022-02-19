@@ -38,7 +38,7 @@ const AddEditInvoice = () => {
     productQuantity,
     totalAmount,
   } = initialValues;
-  const [total, setTotal] = useState(0);
+
   const navigate = useNavigate();
 
   const { id } = useParams();
@@ -89,7 +89,6 @@ const AddEditInvoice = () => {
 
     let { name, value } = e.target;
 
-    // setValues({ ...initialValues, [name]: value });
     setValues((prev) => ({ ...prev, [name]: value }));
   };
 

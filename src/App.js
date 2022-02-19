@@ -13,7 +13,6 @@ function App() {
   useEffect(() => {
     onAuthStateChanged(auth, (authUser) => {
       if (authUser) {
-        console.log(authUser);
         dispatch(persistUser(authUser));
       } else {
         dispatch(persistUser(null));
@@ -28,10 +27,3 @@ function App() {
 }
 //x9DLBAQjl9hiRUTuFrrqINwKdFU2
 export default App;
-
-/*
-1-) Navbar Current User görünmüyor
-2-)Sifre yanlis girse bile yonlendirme yapiyor
-3-)
-
-*/

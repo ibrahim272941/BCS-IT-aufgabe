@@ -10,16 +10,17 @@
 }
 
 .Invoice {
-  width: 60%;
+  width: 80%;
   overflow: hidden;
 }
 
 .footer p {
   font-size: .8rem;
+
 }
 
 .footer {
-  line-height: .2rem;
+  line-height: .5rem;
 }
 
 .App-logo {

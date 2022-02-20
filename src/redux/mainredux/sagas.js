@@ -1,31 +1,29 @@
 import { onValue, query, ref } from "firebase/database";
-import { takeLatest, all, put, fork, call, delay } from "redux-saga/effects";
+import { takeLatest, all, put, fork } from "redux-saga/effects";
 import { database } from "../../auth/getAuth";
+
 import { getInvoiceFail, getInvoiceSucces } from "./actions";
 import * as types from "./actionsTypes";
-import { useFetch } from "./crudFunctions";
-import axios from "axios";
 
-export function* onLoadInvoiceAsync() {
-  // const invoice = useFetch();
-
+export function* onLoadInvoiceAsync(action) {
+  const { localId } = action.payload;
   try {
-    const invoice = axios.get(
-      `https://aufgabe-e6ea6-default-rtdb.europe-west1.firebasedatabase.app/dLiuQkYCo3MpxPohiCq0zvWphnU2`
+    const userRef = ref(database, `${localId}`);
+    const invoice2 = yield new Promise((resolve) =>
+      onValue(query(userRef), resolve)
     );
-    // const { localId } = action.payload;
-    // const userRef = ref(database, "dLiuQkYCo3MpxPohiCq0zvWphnU2");
-    // const invoice = yield  onValue(query(userRef), (snapshot) => {
-    //   snapshot.val();
-    // });
-    // put(getInvoiceSucces(invoice));
+
+    const invoice = yield onValue(query(userRef), (snapshot) => {
+      snapshot.val();
+    });
+
     if (invoice !== null) {
-      yield put(getInvoiceSucces(invoice));
+      yield put(getInvoiceSucces(invoice2.val()));
     } else {
       yield put(getInvoiceSucces({}));
     }
   } catch (error) {
-    yield put(getInvoiceFail());
+    yield put(getInvoiceFail(error));
   }
 }
 export function* onLoadInvoice() {

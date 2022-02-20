@@ -79,24 +79,16 @@ function createData(name, code, population, size) {
 export default function StickyHeadTable() {
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
-  // const [data2, setData] = React.useState({});
-  const data = useFetch();
 
   const {
-    displayName,
     reloadUserInfo: { localId },
   } = useSelector((state) => state.user.currentUser);
-  const data2 = useSelector((state) => state.invoice);
-  console.log(data2);
+  const data = useSelector((state) => state.invoice.invoice);
+
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(getInvoiceStart());
-
-    // const userRef = ref(database, `${localId}`);
-    // onValue(query(userRef), (snapshot) => {
-    //   setData({ ...snapshot.val() });
-    // });
+    dispatch(getInvoiceStart(localId));
   }, []);
 
   // useEffect(() => {
@@ -150,48 +142,52 @@ export default function StickyHeadTable() {
               </TableRow>
             </TableHead>
             <TableBody>
-              {Object.keys(data).map((id, i) => {
-                return (
-                  <TableRow key={i} hover role="checkbox" tabIndex={-1}>
-                    <TableCell>{data[id].costumerName}</TableCell>
-                    <TableCell>{data[id].costumerEmail}</TableCell>
-                    <TableCell>{data[id].costumerMobile}</TableCell>
-                    <TableCell>{data[id].costumerAddres}</TableCell>
-                    <TableCell>{data[id].productName}</TableCell>
-                    <TableCell>{data[id].productPrice}</TableCell>
-                    <TableCell>{data[id].productQuantity}</TableCell>
-                    <TableCell>{data[id].totalAmount}€</TableCell>
-                    <TableCell>
-                      <Link to={`/update/${id}`}>
-                        <p className="btn text-primary">
-                          <i className="fas fa-pencil" />
-                        </p>
-                      </Link>
-                      <Link to="/invoicelist">
-                        <p
-                          className="btn text-danger"
-                          onClick={() => deleteInvoice(id)}
-                        >
-                          <i className="fas fa-trash-alt" />
-                        </p>
-                      </Link>
+              {data ? (
+                Object.keys(data).map((id, i) => {
+                  return (
+                    <TableRow key={i} hover role="checkbox" tabIndex={-1}>
+                      <TableCell>{data[id].costumerName}</TableCell>
+                      <TableCell>{data[id].costumerEmail}</TableCell>
+                      <TableCell>{data[id].costumerMobile}</TableCell>
+                      <TableCell>{data[id].costumerAddres}</TableCell>
+                      <TableCell>{data[id].productName}</TableCell>
+                      <TableCell>{data[id].productPrice}</TableCell>
+                      <TableCell>{data[id].productQuantity}</TableCell>
+                      <TableCell>{data[id].totalAmount}€</TableCell>
+                      <TableCell>
+                        <Link to={`/update/${id}`}>
+                          <p className="btn text-primary">
+                            <i className="fas fa-pencil" />
+                          </p>
+                        </Link>
+                        <Link to="/invoicelist">
+                          <p
+                            className="btn text-danger"
+                            onClick={() => deleteInvoice(id)}
+                          >
+                            <i className="fas fa-trash-alt" />
+                          </p>
+                        </Link>
 
-                      <Link to={`/view/${id}`}>
-                        <p className="btn text-primary">
-                          <i className="fas fa-eye" />
-                        </p>
-                      </Link>
-                    </TableCell>
-                  </TableRow>
-                );
-              })}
+                        <Link to={`/view/${id}`}>
+                          <p className="btn text-primary">
+                            <i className="fas fa-eye" />
+                          </p>
+                        </Link>
+                      </TableCell>
+                    </TableRow>
+                  );
+                })
+              ) : (
+                <p>No Invoice to Show</p>
+              )}
             </TableBody>
           </Table>
         </TableContainer>
         <TablePagination
           rowsPerPageOptions={[10, 25, 100]}
           component="div"
-          count={Object.keys(data).length}
+          count={data ? Object.keys(data).length : 0}
           rowsPerPage={rowsPerPage}
           page={page}
           onPageChange={handleChangePage}

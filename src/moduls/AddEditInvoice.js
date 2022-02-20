@@ -186,6 +186,7 @@ const AddEditInvoice = () => {
                 value={totalAmount}
                 onChange={handleChange}
                 fullWidth
+                InputProps={{ readOnly: true }}
               />
             </Grid>
 

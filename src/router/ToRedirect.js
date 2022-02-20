@@ -19,7 +19,12 @@ const ToRedirect = ({ nav }) => {
   return (
     <div>
       <Spinner
-        style={{ width: "10rem", height: "10rem", marginTop: "10rem" }}
+        style={{
+          width: "10rem",
+          height: "10rem",
+          marginTop: "10rem",
+          alignItems: "center",
+        }}
         animation="border"
         variant="warning"
         size="lg"

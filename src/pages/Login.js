@@ -19,6 +19,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { loginFunc } from "../redux/auhtRedux/actions";
 import FirstNavbar from "../component/Navbar";
 import CopyRight from "../component/CopyRight";
+import { border, width } from "@mui/system";
 
 const signUpValidationSchema = Yup.object().shape({
   email: Yup.string().required("Email is required").email("Invalid Email"),
@@ -51,47 +52,57 @@ const Login = () => {
     resetForm();
   };
   return (
-    <div className="container-fluid  cont">
+    <div className="container-fluid cont  ">
       <FirstNavbar />
       <Container
         sx={{
-          marginTop: "10rem",
-
-          height: "calc(100vh -3rem)",
-          marginBottom: "2rem",
-          textAlign: "center",
-          borderRadius: "1rem",
-          padding: "2rem",
-          bgcolor: "#f8f8f6",
-          boxShadow: "3px 5px 5px 3px #555",
+          display: "flex",
+          justifyContent: "space-between",
+          minWidth: "100%",
+          border: "2px solid",
+          minHeight: "90vh",
         }}
-        maxWidth="xs"
       >
-        {/* <Avatar
+        <div style={{ width: "60%" }}>sasasa</div>
+        <Container
+          sx={{
+            height: "calc(100vh -3rem)",
+            marginTop: "12rem",
+            marginBottom: "2rem",
+            textAlign: "center",
+            borderRadius: "1rem",
+            padding: "2rem",
+            bgcolor: "#f8f8f6",
+            boxShadow: "3px 5px 5px 3px #555",
+            maxHeight: "40vh",
+          }}
+          maxWidth="xs"
+        >
+          {/* <Avatar
           src={Resim}
           sx={{ margin: "1rem auto", bgcolor: "primary.main" }}
         >
         
         </Avatar> */}
-        <Typography sx={{ margin: "1rem" }} variant="h4">
-          Login
-        </Typography>
-        <Formik
-          initialValues={initialValues}
-          onSubmit={handleSubmit}
-          validationSchema={signUpValidationSchema}
-        >
-          {({
-            values,
-            handleChange,
-            handleSubmit,
-            touched,
-            errors,
-            handleBlur,
-          }) => (
-            <form onSubmit={handleSubmit}>
-              <Grid container spacing={3}>
-                {/* <Grid item xs={12}>
+          <Typography sx={{ margin: "1rem" }} variant="h4">
+            Login
+          </Typography>
+          <Formik
+            initialValues={initialValues}
+            onSubmit={handleSubmit}
+            validationSchema={signUpValidationSchema}
+          >
+            {({
+              values,
+              handleChange,
+              handleSubmit,
+              touched,
+              errors,
+              handleBlur,
+            }) => (
+              <form onSubmit={handleSubmit}>
+                <Grid container spacing={3}>
+                  {/* <Grid item xs={12}>
                 <TextField
                   name="username"
                   label="User Name"
@@ -104,66 +115,67 @@ const Login = () => {
                   fullWidth
                 />
               </Grid> */}
-                <Grid item xs={12}>
-                  <TextField
-                    name="email"
-                    label="Email"
-                    variant="outlined"
-                    value={values.email}
-                    onChange={handleChange}
-                    onBlur={handleBlur}
-                    helperText={touched.email && errors.email}
-                    error={touched.email && Boolean(errors.email)}
-                    fullWidth
-                  />
-                </Grid>
-                <Grid item xs={12}>
-                  <TextField
-                    type={showPassword ? "text" : "password"}
-                    name="password"
-                    label="Password"
-                    variant="outlined"
-                    value={values.password}
-                    onChange={handleChange}
-                    onBlur={handleBlur}
-                    helperText={touched.password && errors.password}
-                    error={touched.password && Boolean(errors.password)}
-                    fullWidth
-                    InputProps={{
-                      endAdornment: values.password && (
-                        <InputAdornment position="end">
-                          <IconButton
-                            aria-label="toggle password visibility"
-                            onClick={handleClickShowPassword}
-                            onMouseDown={handleMouseDownPassword}
-                          >
-                            {showPassword ? (
-                              <VisibilityIcon />
-                            ) : (
-                              <VisibilityOffIcon />
-                            )}
-                          </IconButton>
-                        </InputAdornment>
-                      ),
-                    }}
-                  />
-                </Grid>
+                  <Grid item xs={12}>
+                    <TextField
+                      name="email"
+                      label="Email"
+                      variant="outlined"
+                      value={values.email}
+                      onChange={handleChange}
+                      onBlur={handleBlur}
+                      helperText={touched.email && errors.email}
+                      error={touched.email && Boolean(errors.email)}
+                      fullWidth
+                    />
+                  </Grid>
+                  <Grid item xs={12}>
+                    <TextField
+                      type={showPassword ? "text" : "password"}
+                      name="password"
+                      label="Password"
+                      variant="outlined"
+                      value={values.password}
+                      onChange={handleChange}
+                      onBlur={handleBlur}
+                      helperText={touched.password && errors.password}
+                      error={touched.password && Boolean(errors.password)}
+                      fullWidth
+                      InputProps={{
+                        endAdornment: values.password && (
+                          <InputAdornment position="end">
+                            <IconButton
+                              aria-label="toggle password visibility"
+                              onClick={handleClickShowPassword}
+                              onMouseDown={handleMouseDownPassword}
+                            >
+                              {showPassword ? (
+                                <VisibilityIcon />
+                              ) : (
+                                <VisibilityOffIcon />
+                              )}
+                            </IconButton>
+                          </InputAdornment>
+                        ),
+                      }}
+                    />
+                  </Grid>
 
-                <Grid item xs={12}>
-                  <Button
-                    type="submit"
-                    variant="contained"
-                    color="warning"
-                    fullWidth
-                    disabled={loading}
-                  >
-                    Login
-                  </Button>
+                  <Grid item xs={12}>
+                    <Button
+                      type="submit"
+                      variant="contained"
+                      color="warning"
+                      fullWidth
+                      disabled={loading}
+                    >
+                      Login
+                    </Button>
+                  </Grid>
                 </Grid>
-              </Grid>
-            </form>
-          )}
-        </Formik>
+              </form>
+            )}
+          </Formik>
+        </Container>
       </Container>
       <CopyRight />
     </div>

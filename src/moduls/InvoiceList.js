@@ -7,16 +7,11 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TablePagination from "@mui/material/TablePagination";
 import TableRow from "@mui/material/TableRow";
-import { database } from "../auth/getAuth";
 import { useEffect } from "react";
-import { child, get, onValue, query, ref, remove } from "firebase/database";
 import { useSelector, useDispatch } from "react-redux";
 import MainNavbar from "../component/MainNavbar";
-
 import { Link } from "react-router-dom";
-import { getInvoiceStart, getInvoiceSucces } from "../redux/mainredux/actions";
-import { onLoadInvoiceAsync } from "../redux/mainredux/sagas";
-import { useFetch } from "../redux/mainredux/crudFunctions";
+import { delInvoiceStart, getInvoiceStart } from "../redux/mainredux/actions";
 
 const columns = [
   { id: "name", label: "Costumer Name", minWidth: 100 },
@@ -91,24 +86,10 @@ export default function StickyHeadTable() {
     dispatch(getInvoiceStart(localId));
   }, []);
 
-  // useEffect(() => {
-  //   const dbRef = ref(database);
-  //   get(child(dbRef, `${localId}`))
-  //     .then((snapshot) => {
-  //       if (snapshot.exists()) {
-  //         setData({ ...snapshot.val() });
-  //       } else {
-  //         console.log("No data available");
-  //       }
-  //     })
-  //     .catch((error) => {
-  //       console.error(error);
-  //     });
-  // }, []);
-
   const deleteInvoice = (id) => {
     if (window.confirm("Are you sure to delete the invoice")) {
-      remove(ref(database, `${localId}/${id}`));
+      dispatch(delInvoiceStart(localId, id));
+
       window.location.reload();
     }
   };
@@ -179,7 +160,7 @@ export default function StickyHeadTable() {
                   );
                 })
               ) : (
-                <p>No Invoice to Show</p>
+                <TableCell>No Invoice to Show</TableCell>
               )}
             </TableBody>
           </Table>
@@ -197,3 +178,18 @@ export default function StickyHeadTable() {
     </div>
   );
 }
+
+// useEffect(() => {
+//   const dbRef = ref(database);
+//   get(child(dbRef, `${localId}`))
+//     .then((snapshot) => {
+//       if (snapshot.exists()) {
+//         setData({ ...snapshot.val() });
+//       } else {
+//         console.log("No data available");
+//       }
+//     })
+//     .catch((error) => {
+//       console.error(error);
+//     });
+// }, []);

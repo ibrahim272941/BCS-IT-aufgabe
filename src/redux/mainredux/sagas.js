@@ -1,4 +1,4 @@
-import { onValue, query, ref, remove } from "firebase/database";
+import { onValue, push, query, ref, remove, set } from "firebase/database";
 import { takeLatest, all, put, fork } from "redux-saga/effects";
 import { database } from "../../auth/getAuth";
 
@@ -7,6 +7,7 @@ import {
   getInvoiceSucces,
   delInvoiceSucces,
   delInvoiceFail,
+  addInvoiceFail,
 } from "./actions";
 import * as types from "./actionsTypes";
 
@@ -38,7 +39,7 @@ export function* onLoadInvoice() {
 
 export function* onDeleteInvoiceAsync({ payload }) {
   const { id, localId } = payload;
-  console.log(id, localId);
+
   try {
     yield remove(ref(database, `${id}/${localId}`));
     yield put(delInvoiceSucces());
@@ -49,8 +50,26 @@ export function* onDeleteInvoiceAsync({ payload }) {
 export function* onDeleteInvoice() {
   yield takeLatest(types.DELETE_INVOICE_START, onDeleteInvoiceAsync);
 }
+export function* onAddInvoiceAsync({ payload }) {
+  const { initialValues, localId } = payload;
+  console.log(initialValues, localId);
+  try {
+    const userRef = ref(database, `${localId}`);
+    const newUserRef = push(userRef);
+    set(newUserRef, initialValues);
+  } catch (error) {
+    yield put(addInvoiceFail(error));
+  }
+}
+export function* onAddInvoice() {
+  yield takeLatest(types.ADD_INVOICE_START, onAddInvoiceAsync);
+}
 
-const invoiceSagas = [fork(onLoadInvoice), fork(onDeleteInvoice)];
+const invoiceSagas = [
+  fork(onLoadInvoice),
+  fork(onDeleteInvoice),
+  fork(onAddInvoice),
+];
 
 export default function* rootSaga() {
   yield all([...invoiceSagas]);

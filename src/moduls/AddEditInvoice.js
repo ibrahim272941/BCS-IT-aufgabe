@@ -7,7 +7,8 @@ import MainNavbar from "../component/MainNavbar";
 import { useNavigate, useParams } from "react-router-dom";
 
 import { child, get, push, ref, set, update } from "firebase/database";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import { addInvoiceStart } from "../redux/mainredux/actions";
 
 const AddEditInvoice = () => {
   const VAT = 0.19;
@@ -23,7 +24,7 @@ const AddEditInvoice = () => {
   };
   const [data, setData] = useState({});
   const [initialValues, setValues] = useState(values);
-
+  const dispatch = useDispatch();
   const {
     displayName,
     reloadUserInfo: { localId },
@@ -42,21 +43,22 @@ const AddEditInvoice = () => {
   const navigate = useNavigate();
 
   const { id } = useParams();
-
-  useEffect(() => {
-    const dbRef = ref(database);
-    get(child(dbRef, `${localId}`))
-      .then((snapshot) => {
-        if (snapshot.exists()) {
-          setData({ ...snapshot.val() });
-        } else {
-          console.log("No data available");
-        }
-      })
-      .catch((error) => {
-        console.error(error);
-      });
-  }, [id]);
+  const { localId: data2 } = useSelector((state) => state.invoice);
+  console.log(data2);
+  // useEffect(() => {
+  //   const dbRef = ref(database);
+  //   get(child(dbRef, `${localId}`))
+  //     .then((snapshot) => {
+  //       if (snapshot.exists()) {
+  //         setData({ ...snapshot.val() });
+  //       } else {
+  //         console.log("No data available");
+  //       }
+  //     })
+  //     .catch((error) => {
+  //       console.error(error);
+  //     });
+  // }, [id]);
   useEffect(() => {
     if (isEmpty(id)) {
       setValues({ ...values });
@@ -73,10 +75,11 @@ const AddEditInvoice = () => {
 
   const handleSubmit = async (userId) => {
     if (isEmpty(id)) {
-      const userRef = ref(database, `${localId}`, userId);
-      const newUserRef = push(userRef);
-      set(newUserRef, initialValues);
+      // const userRef = ref(database, `${localId}`, userId);
+      // const newUserRef = push(userRef);
+      // set(newUserRef, initialValues);
       navigate("/invoicelist");
+      dispatch(addInvoiceStart(initialValues, localId));
     } else {
       const updates = {};
       updates[`${localId}/${id}`] = initialValues;

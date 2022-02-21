@@ -23,5 +23,18 @@ export const delInvoiceSucces = () => ({
 });
 export const delInvoiceFail = (error) => ({
   type: types.DELETE_INVOICE_FAIL,
+  payload: error,
+});
+
+export const addInvoiceStart = (initialValues, localId) => ({
+  type: types.ADD_INVOICE_START,
+  payload: { initialValues, localId },
+});
+export const addInvoiceSucces = () => ({
+  type: types.ADD_INVOICE_SUCCESS,
   payload: {},
+});
+export const addInvoiceFail = (error) => ({
+  type: types.ADD_INVOICE_FAIL,
+  payload: error,
 });

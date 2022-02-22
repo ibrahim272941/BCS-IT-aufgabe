@@ -1,4 +1,5 @@
 import * as types from "./actionsTypes";
+/* GET invoice  saved in database  */
 
 export const getInvoiceStart = (localId) => ({
   type: types.GET_INVOICE_START,
@@ -13,6 +14,7 @@ export const getInvoiceFail = (error) => ({
   payload: error,
 });
 
+/* DELETE Invoice  */
 export const delInvoiceStart = (id, localId) => ({
   type: types.DELETE_INVOICE_START,
   payload: { id, localId },
@@ -26,6 +28,7 @@ export const delInvoiceFail = (error) => ({
   payload: error,
 });
 
+/* ADD Invice to Database*/
 export const addInvoiceStart = (initialValues, localId) => ({
   type: types.ADD_INVOICE_START,
   payload: { initialValues, localId },
@@ -36,5 +39,20 @@ export const addInvoiceSucces = () => ({
 });
 export const addInvoiceFail = (error) => ({
   type: types.ADD_INVOICE_FAIL,
+  payload: error,
+});
+
+/*EDIT Invoice in Database */
+export const editInvoiceStart = (initialValues, localId, id) => ({
+  type: types.EDIT_INVOICE_START,
+  payload: { initialValues, localId, id },
+});
+
+export const editInvoiceSuccess = () => ({
+  type: types.EDIT_INVOICE_SUCCESS,
+  payload: {},
+});
+export const editInvoiceFail = (error) => ({
+  type: types.EDIT_INVOICE_FAIL,
   payload: error,
 });

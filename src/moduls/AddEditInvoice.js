@@ -8,7 +8,11 @@ import { useNavigate, useParams } from "react-router-dom";
 
 import { child, get, push, ref, set, update } from "firebase/database";
 import { useSelector, useDispatch } from "react-redux";
-import { addInvoiceStart } from "../redux/mainredux/actions";
+import {
+  addInvoiceStart,
+  editInvoiceStart,
+  getInvoiceStart,
+} from "../redux/mainredux/actions";
 
 const AddEditInvoice = () => {
   const VAT = 0.19;
@@ -22,6 +26,7 @@ const AddEditInvoice = () => {
     productQuantity: "",
     totalAmount: "",
   };
+
   const [data, setData] = useState({});
   const [initialValues, setValues] = useState(values);
   const dispatch = useDispatch();
@@ -40,51 +45,39 @@ const AddEditInvoice = () => {
     totalAmount,
   } = initialValues;
 
-  const navigate = useNavigate();
-
-  const { id } = useParams();
-  const { localId: data2 } = useSelector((state) => state.invoice);
-  console.log(data2);
-  // useEffect(() => {
-  //   const dbRef = ref(database);
-  //   get(child(dbRef, `${localId}`))
-  //     .then((snapshot) => {
-  //       if (snapshot.exists()) {
-  //         setData({ ...snapshot.val() });
-  //       } else {
-  //         console.log("No data available");
-  //       }
-  //     })
-  //     .catch((error) => {
-  //       console.error(error);
-  //     });
-  // }, [id]);
-  useEffect(() => {
-    if (isEmpty(id)) {
-      setValues({ ...values });
-    } else {
-      setValues({ ...data[id] });
-    }
-  }, [id, data]);
   useMemo(() => {
     const calc = parseFloat(
       productQuantity * (parseFloat(productPrice) + productPrice * VAT)
     ).toFixed(2);
     setValues((prev) => ({ ...prev, totalAmount: calc }));
   }, [productPrice, productQuantity]);
+  const navigate = useNavigate();
+
+  const { id } = useParams();
+  const data2 = useSelector((state) => state.invoice.invoice);
+
+  useEffect(() => {
+    dispatch(getInvoiceStart(localId));
+  }, [id]);
+  useEffect(() => {
+    if (isEmpty(id)) {
+      console.log(initialValues);
+      setValues({ ...values });
+    } else {
+      setValues({ ...data2[id] });
+    }
+  }, [id, data2]);
 
   const handleSubmit = async (userId) => {
     if (isEmpty(id)) {
-      // const userRef = ref(database, `${localId}`, userId);
-      // const newUserRef = push(userRef);
-      // set(newUserRef, initialValues);
       navigate("/invoicelist");
       dispatch(addInvoiceStart(initialValues, localId));
     } else {
-      const updates = {};
-      updates[`${localId}/${id}`] = initialValues;
-      update(ref(database), updates);
+      // const updates = {};
+      // updates[`${localId}/${id}`] = initialValues;
+      // update(ref(database), updates);
       navigate("/invoicelist");
+      dispatch(editInvoiceStart(initialValues, localId, id));
     }
   };
   const handleChange = (e) => {

@@ -8,10 +8,12 @@ import {
   delInvoiceSucces,
   delInvoiceFail,
   addInvoiceFail,
+  editInvoiceFail,
 } from "./actions";
 import * as types from "./actionsTypes";
 
-export function* onLoadInvoiceAsync(action) {
+/*GET invoice to database */
+export function* onGetInvoiceAsync(action) {
   const { localId } = action.payload;
 
   try {
@@ -33,10 +35,11 @@ export function* onLoadInvoiceAsync(action) {
     yield put(getInvoiceFail(error));
   }
 }
-export function* onLoadInvoice() {
-  yield takeLatest(types.GET_INVOICE_START, onLoadInvoiceAsync);
+export function* onGetInvoice() {
+  yield takeLatest(types.GET_INVOICE_START, onGetInvoiceAsync);
 }
 
+/*Delete Invoice from Database */
 export function* onDeleteInvoiceAsync({ payload }) {
   const { id, localId } = payload;
 
@@ -50,6 +53,8 @@ export function* onDeleteInvoiceAsync({ payload }) {
 export function* onDeleteInvoice() {
   yield takeLatest(types.DELETE_INVOICE_START, onDeleteInvoiceAsync);
 }
+
+/*Add Invoice */
 export function* onAddInvoiceAsync({ payload }) {
   const { initialValues, localId } = payload;
   console.log(initialValues, localId);
@@ -65,8 +70,25 @@ export function* onAddInvoice() {
   yield takeLatest(types.ADD_INVOICE_START, onAddInvoiceAsync);
 }
 
+/*Edit Invoice */
+
+export function* onEditInvoiceAsync({ payload }) {
+  const { initialValues, localId } = payload;
+  console.log(payload);
+  try {
+    // const updates = {};
+    // updates[`${localId}/${id}`] = initialValues;
+    // update(ref(database), updates);
+  } catch (error) {
+    yield put(editInvoiceFail(error));
+  }
+}
+
+export function* onEditInvoice() {
+  yield takeLatest(types.EDIT_INVOICE_START, onEditInvoiceAsync);
+}
 const invoiceSagas = [
-  fork(onLoadInvoice),
+  fork(onGetInvoice),
   fork(onDeleteInvoice),
   fork(onAddInvoice),
 ];

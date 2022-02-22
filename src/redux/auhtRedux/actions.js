@@ -47,9 +47,9 @@ export const persistUser = (user) => ({
 });
 
 export const registerFunc = (email, password, displayName) => {
-  return async function (dispatch) {
+  return function (dispatch) {
     dispatch(registerStart());
-    await createUserWithEmailAndPassword(auth, email, password)
+    createUserWithEmailAndPassword(auth, email, password)
       .then(({ user }) => {
         updateProfile(user, { displayName });
 

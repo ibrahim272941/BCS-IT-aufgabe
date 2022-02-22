@@ -10,6 +10,7 @@ const MainNavbar = () => {
   const signOutFunc = () => {
     return currentUser && dispatch(logoutFunc());
   };
+  console.log(currentUser);
   return (
     <div className="container-fluid">
       <nav className="navbar navbar-expand-lg bg-dark d-flex justify-content-between">
@@ -38,10 +39,12 @@ const MainNavbar = () => {
             )}
           </span>
           <span>
-            {currentUser && (
+            {currentUser.displayName ? (
               <Button className="btn btn-warning" onClick={signOutFunc}>
                 Sign Out
               </Button>
+            ) : (
+              window.location.reload()
             )}
           </span>
         </div>

@@ -27,7 +27,6 @@ const AddEditInvoice = () => {
     totalAmount: "",
   };
 
-  const [data, setData] = useState({});
   const [initialValues, setValues] = useState(values);
   const dispatch = useDispatch();
   const {
@@ -50,23 +49,23 @@ const AddEditInvoice = () => {
       productQuantity * (parseFloat(productPrice) + productPrice * VAT)
     ).toFixed(2);
     setValues((prev) => ({ ...prev, totalAmount: calc }));
-  }, [productPrice, productQuantity]);
+  }, [productPrice, productQuantity, localId]);
+
   const navigate = useNavigate();
 
   const { id } = useParams();
   const data2 = useSelector((state) => state.invoice.invoice);
 
   useEffect(() => {
-    dispatch(getInvoiceStart(localId));
+    // dispatch(getInvoiceStart(localId));
   }, [id]);
   useEffect(() => {
     if (isEmpty(id)) {
-      console.log(initialValues);
       setValues({ ...values });
     } else {
       setValues({ ...data2[id] });
     }
-  }, [id, data2]);
+  }, [id, data2, localId]);
 
   const handleSubmit = async (userId) => {
     if (isEmpty(id)) {
@@ -91,114 +90,118 @@ const AddEditInvoice = () => {
   return (
     <>
       <MainNavbar />
-      <div className="container mt-5">
-        <form onSubmit={handleSubmit}>
-          <Grid container spacing={3}>
-            <Grid item xs={12}>
-              <TextField
-                type="text"
-                name="costumerName"
-                label="Costumer Name"
-                variant="standard"
-                value={costumerName}
-                onChange={handleChange}
-                fullWidth
-              />
-            </Grid>
+      {displayName ? (
+        <div className="container mt-5">
+          <form onSubmit={handleSubmit}>
+            <Grid container spacing={3}>
+              <Grid item xs={12}>
+                <TextField
+                  type="text"
+                  name="costumerName"
+                  label="Costumer Name"
+                  variant="standard"
+                  value={costumerName}
+                  onChange={handleChange}
+                  fullWidth
+                />
+              </Grid>
 
-            <Grid item xs={12}>
-              <TextField
-                type="email"
-                name="costumerEmail"
-                label="Costumer Email"
-                variant="standard"
-                value={costumerEmail}
-                onChange={handleChange}
-                fullWidth
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <TextField
-                type="tel"
-                name="costumerMobile"
-                label="Costumer Mobile"
-                variant="standard"
-                value={costumerMobile}
-                onChange={handleChange}
-                fullWidth
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <TextField
-                type="text"
-                name="costumerAddres"
-                label="Costumer Address"
-                variant="standard"
-                value={costumerAddres}
-                onChange={handleChange}
-                fullWidth
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <TextField
-                type="text"
-                name="productName"
-                label="Product Name"
-                variant="standard"
-                value={productName}
-                onChange={handleChange}
-                fullWidth
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <TextField
-                type="number"
-                name="productPrice"
-                label="Product Price"
-                variant="standard"
-                value={productPrice}
-                onChange={handleChange}
-                fullWidth
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <TextField
-                type="number"
-                name="productQuantity"
-                label="Quantity"
-                variant="standard"
-                value={productQuantity}
-                onChange={handleChange}
-                fullWidth
-              />
-            </Grid>
-            <Grid item xs={12}>
-              {}
-              <TextField
-                type="number"
-                name="totalAmount"
-                label="Total amount"
-                variant="standard"
-                value={totalAmount}
-                onChange={handleChange}
-                fullWidth
-                InputProps={{ readOnly: true }}
-              />
-            </Grid>
+              <Grid item xs={12}>
+                <TextField
+                  type="email"
+                  name="costumerEmail"
+                  label="Costumer Email"
+                  variant="standard"
+                  value={costumerEmail}
+                  onChange={handleChange}
+                  fullWidth
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <TextField
+                  type="tel"
+                  name="costumerMobile"
+                  label="Costumer Mobile"
+                  variant="standard"
+                  value={costumerMobile}
+                  onChange={handleChange}
+                  fullWidth
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <TextField
+                  type="text"
+                  name="costumerAddres"
+                  label="Costumer Address"
+                  variant="standard"
+                  value={costumerAddres}
+                  onChange={handleChange}
+                  fullWidth
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <TextField
+                  type="text"
+                  name="productName"
+                  label="Product Name"
+                  variant="standard"
+                  value={productName}
+                  onChange={handleChange}
+                  fullWidth
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <TextField
+                  type="number"
+                  name="productPrice"
+                  label="Product Price"
+                  variant="standard"
+                  value={productPrice}
+                  onChange={handleChange}
+                  fullWidth
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <TextField
+                  type="number"
+                  name="productQuantity"
+                  label="Quantity"
+                  variant="standard"
+                  value={productQuantity}
+                  onChange={handleChange}
+                  fullWidth
+                />
+              </Grid>
+              <Grid item xs={12}>
+                {}
+                <TextField
+                  type="number"
+                  name="totalAmount"
+                  label="Total amount"
+                  variant="standard"
+                  value={totalAmount}
+                  onChange={handleChange}
+                  fullWidth
+                  InputProps={{ readOnly: true }}
+                />
+              </Grid>
 
-            <Grid item xs={12}>
-              <Button
-                type="submit"
-                variant="contained"
-                color="warning"
-                fullWidth
-              >
-                Create Invoice
-              </Button>
+              <Grid item xs={12}>
+                <Button
+                  type="submit"
+                  variant="contained"
+                  color="warning"
+                  fullWidth
+                >
+                  Create Invoice
+                </Button>
+              </Grid>
             </Grid>
-          </Grid>
-        </form>
-      </div>
+          </form>
+        </div>
+      ) : (
+        <p>Please refresh the page</p>
+      )}
     </>
   );
 };

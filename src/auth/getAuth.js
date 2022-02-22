@@ -1,7 +1,7 @@
 import { initializeApp } from "firebase/app";
 import { getAuth } from "firebase/auth";
 import { getDatabase } from "firebase/database";
-import ReduxSagaFirebase from "redux-saga-firebase";
+
 const firebaseConfig = {
   apiKey: "AIzaSyDm-EH_bsf5J49X-yJNUVKWbqRHuCMCXWw",
   authDomain: "aufgabe-e6ea6.firebaseapp.com",
@@ -16,4 +16,3 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 export const auth = getAuth(app);
 export const database = getDatabase(app);
-export const sagaFirebase = new ReduxSagaFirebase(app);

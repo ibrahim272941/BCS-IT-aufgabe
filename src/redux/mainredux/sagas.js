@@ -1,4 +1,12 @@
-import { onValue, push, query, ref, remove, set } from "firebase/database";
+import {
+  onValue,
+  push,
+  query,
+  ref,
+  remove,
+  set,
+  update,
+} from "firebase/database";
 import { takeLatest, all, put, fork } from "redux-saga/effects";
 import { database } from "../../auth/getAuth";
 
@@ -73,12 +81,12 @@ export function* onAddInvoice() {
 /*Edit Invoice */
 
 export function* onEditInvoiceAsync({ payload }) {
-  const { initialValues, localId } = payload;
+  const { initialValues, localId, id } = payload;
   console.log(payload);
   try {
-    // const updates = {};
-    // updates[`${localId}/${id}`] = initialValues;
-    // update(ref(database), updates);
+    const updates = {};
+    updates[`${localId}/${id}`] = initialValues;
+    update(ref(database), updates);
   } catch (error) {
     yield put(editInvoiceFail(error));
   }
@@ -91,6 +99,7 @@ const invoiceSagas = [
   fork(onGetInvoice),
   fork(onDeleteInvoice),
   fork(onAddInvoice),
+  fork(onEditInvoice),
 ];
 
 export default function* rootSaga() {

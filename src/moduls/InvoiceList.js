@@ -12,6 +12,7 @@ import { useSelector, useDispatch } from "react-redux";
 import MainNavbar from "../component/MainNavbar";
 import { Link } from "react-router-dom";
 import { delInvoiceStart, getInvoiceStart } from "../redux/mainredux/actions";
+import PersistentDrawerLeft from "../component/Modal";
 
 const columns = [
   { id: "name", label: "Costumer Name", minWidth: 100 },
@@ -105,7 +106,7 @@ export default function StickyHeadTable() {
 
   return (
     <div className="invoiceList">
-      <MainNavbar />
+      <PersistentDrawerLeft />
       <Paper sx={{ width: "100%", overflow: "hidden" }}>
         <TableContainer sx={{ maxHeight: 440 }}>
           <Table stickyHeader aria-label="sticky table">

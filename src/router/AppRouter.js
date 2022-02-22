@@ -9,7 +9,7 @@ import AddEditInvoice from "../moduls/AddEditInvoice";
 import InvoiceList from "../moduls/InvoiceList";
 import AuthRouter from "./AuthRouter";
 import ViewInvoice from "../moduls/ViewInvoice";
-import { PdfViewer } from "../component/PdfViewer";
+import PdfViewer from "../component/PdfViewer";
 
 const AppRouter = () => {
   return (

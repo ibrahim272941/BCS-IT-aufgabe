@@ -6,6 +6,7 @@ import { useParams } from "react-router-dom";
 import { database } from "../auth/getAuth";
 
 const ViewInvoice = () => {
+  const [show, setShow] = useState(true);
   const {
     displayName,
     reloadUserInfo: { localId },
@@ -14,6 +15,7 @@ const ViewInvoice = () => {
   const { id } = useParams();
   const handlePrint = () => {
     window.print();
+    setShow(!show);
   };
 
   useEffect(() => {
@@ -33,6 +35,7 @@ const ViewInvoice = () => {
           <div>
             <h2 className="fw-bold fs-1 mb-3">Invoice</h2>
           </div>
+
           <div>
             <div className="d-flex align-items-center justify-content-center flex-wrap">
               <p>
@@ -117,7 +120,7 @@ const ViewInvoice = () => {
         </section> */}
         {/*End of Notes*/}
         {/*Footer */}
-        <div className="d-flex justify-content-end  mt-5">
+        <div className="d-flex justify-content-end address">
           <div className="footer w-25  d-flex flex-column flex-end">
             <p>BCS - IT</p>
             <p>Solinger Str. 24 , 40764 Langenfeld</p>

@@ -13,6 +13,7 @@ import {
   editInvoiceStart,
   getInvoiceStart,
 } from "../redux/mainredux/actions";
+import PersistentDrawerLeft from "../component/Modal";
 
 const AddEditInvoice = () => {
   const VAT = 0.19;
@@ -89,9 +90,9 @@ const AddEditInvoice = () => {
 
   return (
     <>
-      <MainNavbar />
+      <PersistentDrawerLeft />
       {displayName ? (
-        <div className="container mt-5">
+        <div className="container mx-6" style={{ marginTop: "5rem" }}>
           <form onSubmit={handleSubmit}>
             <Grid container spacing={3}>
               <Grid item xs={12}>

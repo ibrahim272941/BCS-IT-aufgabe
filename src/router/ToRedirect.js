@@ -17,7 +17,7 @@ const ToRedirect = ({ nav }) => {
   }, [count, navigate, nav]);
 
   return (
-    <div>
+    <div className="text-center">
       <Spinner
         style={{
           width: "10rem",

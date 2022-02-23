@@ -57,6 +57,10 @@
   color: #61dafb;
 }
 
+h1 {
+  color: #F49B02;
+}
+
 @keyframes App-logo-spin {
   from {
     transform: rotate(0deg);
@@ -68,8 +72,9 @@
 }
 
 .cont {
-  background-color: #212529;
+  background-color: #393a3b;
   height: 100vh;
+  color: "#F49B02"
 }
 
 span {

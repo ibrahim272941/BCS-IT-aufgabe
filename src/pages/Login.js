@@ -19,7 +19,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { loginFunc } from "../redux/auhtRedux/actions";
 import FirstNavbar from "../component/Navbar";
 import CopyRight from "../component/CopyRight";
-import { border, width } from "@mui/system";
+import { border, color, width } from "@mui/system";
+import Welcome from "../component/Welcome";
 
 const signUpValidationSchema = Yup.object().shape({
   email: Yup.string().required("Email is required").email("Invalid Email"),
@@ -52,31 +53,33 @@ const Login = () => {
     resetForm();
   };
   return (
-    <div className="container-fluid cont  ">
+    <div className="container-fluid cont h-100 ">
       <FirstNavbar />
       <Container
         sx={{
           display: "flex",
           justifyContent: "space-between",
           minWidth: "100%",
-          border: "2px solid",
-          minHeight: "90vh",
+
+          minHeight: "100vh",
         }}
       >
-        <div style={{ width: "60%" }}>sasasa</div>
+        <Welcome />
         <Container
           sx={{
-            height: "calc(100vh -3rem)",
-            marginTop: "12rem",
+            // height: "calc(100vh -3rem)",
+            marginTop: "14rem",
+
             marginBottom: "2rem",
             textAlign: "center",
             borderRadius: "1rem",
             padding: "2rem",
-            bgcolor: "#f8f8f6",
-            boxShadow: "3px 5px 5px 3px #555",
+            bgcolor: "#393a3b",
+            // boxShadow: "3px 5px 5px 3px #555",
             maxHeight: "40vh",
           }}
           maxWidth="xs"
+          color="warning"
         >
           {/* <Avatar
           src={Resim}
@@ -84,7 +87,7 @@ const Login = () => {
         >
         
         </Avatar> */}
-          <Typography sx={{ margin: "1rem" }} variant="h4">
+          <Typography sx={{ margin: "1rem", color: "#F49B02" }} variant="h4">
             Login
           </Typography>
           <Formik
@@ -100,7 +103,7 @@ const Login = () => {
               errors,
               handleBlur,
             }) => (
-              <form onSubmit={handleSubmit}>
+              <form className="text-warning" onSubmit={handleSubmit}>
                 <Grid container spacing={3}>
                   {/* <Grid item xs={12}>
                 <TextField
@@ -126,6 +129,9 @@ const Login = () => {
                       helperText={touched.email && errors.email}
                       error={touched.email && Boolean(errors.email)}
                       fullWidth
+                      variant="standard"
+                      color="warning"
+                      focused
                     />
                   </Grid>
                   <Grid item xs={12}>
@@ -140,6 +146,9 @@ const Login = () => {
                       helperText={touched.password && errors.password}
                       error={touched.password && Boolean(errors.password)}
                       fullWidth
+                      variant="standard"
+                      color="warning"
+                      focused
                       InputProps={{
                         endAdornment: values.password && (
                           <InputAdornment position="end">

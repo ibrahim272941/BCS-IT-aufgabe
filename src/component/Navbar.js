@@ -13,22 +13,12 @@ const FirstNavbar = () => {
   const navigate = useNavigate();
 
   return (
-    <Navbar bg="dark" variant="dark">
+    <Navbar style={{ color: "#393A3B" }}>
       <Container>
-        <Navbar.Brand>
-          <p
-            style={{
-              textDecoration: "none",
-              fontWeight: "600",
-              color: "#AA5803",
-            }}
-          >
-            BCS-IT Aufgabe
-          </p>
-        </Navbar.Brand>
+        <Navbar.Brand></Navbar.Brand>
         <Navbar.Toggle />
         <Navbar.Collapse className="justify-content-end">
-          <Navbar.Text>
+          <Navbar.Text style={{ color: "#DFE0DF" }}>
             {/* {!currentUser ? (path = "/login") : (path = "")} */}
             {path === "/login" && " Don't have an account "}
             {path === "/register" && "Already have an account "}

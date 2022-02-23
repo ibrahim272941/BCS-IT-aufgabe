@@ -19,6 +19,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { registerFunc } from "../redux/auhtRedux/actions";
 import FirstNavbar from "../component/Navbar";
 import CopyRight from "../component/CopyRight";
+import Welcome from "../component/Welcome";
 
 const signUpValidationSchema = Yup.object().shape({
   username: Yup.string().required("User Name is required"),
@@ -60,18 +61,19 @@ const Register = () => {
     currentUser && navigate("/");
   };
   return (
-    <div className="container-fluid cont">
+    <div className="container-fluid cont h-100">
       <FirstNavbar />
       <Container
         sx={{
           display: "flex",
           justifyContent: "space-between",
           minWidth: "100%",
-          border: "2px solid",
+
           minHeight: "90vh",
+          bgcolor: "#393a3b",
         }}
       >
-        <div style={{ width: "60%" }}>sasasa</div>
+        <Welcome />
 
         <Container
           sx={{
@@ -82,7 +84,8 @@ const Register = () => {
             borderRadius: "1rem",
             padding: "2rem",
             bgcolor: "#f8f8f6",
-            boxShadow: "3px 5px 5px 3px #555",
+            // boxShadow: "3px 5px 5px 3px #555",
+            bgcolor: "#393a3b",
           }}
           maxWidth="xs"
         >
@@ -92,7 +95,7 @@ const Register = () => {
         >
          
         </Avatar> */}
-          <Typography sx={{ margin: "1rem" }} variant="h4">
+          <Typography sx={{ margin: "1rem", color: "#F49B02" }} variant="h4">
             Sign Up
           </Typography>
           <Formik
@@ -121,6 +124,9 @@ const Register = () => {
                       helperText={touched.username && errors.username}
                       error={touched.username && Boolean(errors.username)}
                       fullWidth
+                      variant="standard"
+                      color="warning"
+                      focused
                     />
                   </Grid>
                   <Grid item xs={12}>
@@ -134,6 +140,9 @@ const Register = () => {
                       helperText={touched.email && errors.email}
                       error={touched.email && Boolean(errors.email)}
                       fullWidth
+                      variant="standard"
+                      color="warning"
+                      focused
                     />
                   </Grid>
                   <Grid item xs={12}>
@@ -148,6 +157,9 @@ const Register = () => {
                       helperText={touched.password && errors.password}
                       error={touched.password && Boolean(errors.password)}
                       fullWidth
+                      variant="standard"
+                      color="warning"
+                      focused
                       InputProps={{
                         endAdornment: values.password && (
                           <InputAdornment position="end">
@@ -215,7 +227,6 @@ const Register = () => {
           </Formik>
         </Container>
       </Container>
-
       <CopyRight />
     </div>
   );

@@ -20,42 +20,42 @@ const columns = [
   {
     id: "population",
     label: "Costumer Mobile",
-    minWidth: 170,
+    minWidth: 100,
     align: "left",
     format: (value) => value.toLocaleString("en-US"),
   },
   {
     id: "size",
     label: "Costumer Address",
-    minWidth: 170,
+    minWidth: 180,
     align: "left",
     format: (value) => value.toLocaleString("en-US"),
   },
   {
     id: "density",
     label: "Product Name",
-    minWidth: 170,
+    minWidth: 100,
     align: "left",
     format: (value) => value.toFixed(2),
   },
   {
     id: "productPrice",
     label: "Product Price",
-    minWidth: 170,
+    minWidth: 100,
     align: "left",
     format: (value) => value.toFixed(2),
   },
   {
     id: "productQuantity",
     label: "Product Quantity",
-    minWidth: 170,
+    minWidth: 100,
     align: "left",
     format: (value) => value.toFixed(2),
   },
   {
     id: "totalAmount",
     label: "Total Amount",
-    minWidth: 170,
+    minWidth: 100,
     align: "left",
     format: (value) => value.toFixed(2),
   },
@@ -107,7 +107,14 @@ export default function StickyHeadTable() {
   return (
     <div className="invoiceList">
       <PersistentDrawerLeft />
-      <Paper sx={{ width: "100%", overflow: "hidden" }}>
+      <Paper
+        sx={{
+          width: "100%",
+          overflow: "hidden",
+          marginTop: "4rem",
+          height: "100vh",
+        }}
+      >
         <TableContainer sx={{ maxHeight: 440 }}>
           <Table stickyHeader aria-label="sticky table">
             <TableHead>
@@ -179,18 +186,3 @@ export default function StickyHeadTable() {
     </div>
   );
 }
-
-// useEffect(() => {
-//   const dbRef = ref(database);
-//   get(child(dbRef, `${localId}`))
-//     .then((snapshot) => {
-//       if (snapshot.exists()) {
-//         setData({ ...snapshot.val() });
-//       } else {
-//         console.log("No data available");
-//       }
-//     })
-//     .catch((error) => {
-//       console.error(error);
-//     });
-// }, []);

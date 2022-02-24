@@ -1,6 +1,6 @@
 // import { Copyright } from "@mui/icons-material";
 import { onValue, query, ref } from "firebase/database";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useMemo } from "react";
 import { useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import { database } from "../auth/getAuth";
@@ -12,6 +12,7 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
+import { useBaseContext } from "../contexts/BaseContext";
 
 // const ViewInvoice = () => {
 //   const [show, setShow] = useState(true);
@@ -145,50 +146,64 @@ import Paper from "@mui/material/Paper";
 
 // export default ViewInvoice;
 
-const TAX_RATE = 0.07;
+const TAX_RATE = 0.19;
 
 function ccyFormat(num) {
   return `${num.toFixed(2)}`;
 }
 
-function priceRow(qty, unit) {
-  return qty * unit;
-}
+// function priceRow(qty, unit) {
+//   return qty * unit;
+// }
 
-function createRow(desc, qty, unit) {
-  const price = priceRow(qty, unit);
-  return { desc, qty, unit, price };
-}
-
-function subtotal(items) {
-  return items.map(({ price }) => price).reduce((sum, i) => sum + i, 0);
-}
-
-const rows = [
-  createRow("Paperclips (Box)", 100, 1.15),
-  createRow("Paper (Case)", 10, 45.99),
-  createRow("Waste Basket", 2, 17.99),
-];
-
-const invoiceSubtotal = subtotal(rows);
-const invoiceTaxes = TAX_RATE * invoiceSubtotal;
-const invoiceTotal = invoiceTaxes + invoiceSubtotal;
+// function createRow(desc, qty, unit) {
+//   const price = priceRow(qty, unit);
+//   return { desc, qty, unit, price };
+// }
 
 export default function SpanningTable() {
+  const baseContext = useBaseContext();
+  const ids = useMemo(
+    () => ({
+      ids: baseContext.ids,
+      setIds: baseContext.setIds,
+    }),
+    [baseContext.ids, baseContext.setIds]
+  );
   const {
     displayName,
     reloadUserInfo: { localId },
   } = useSelector((state) => state.user.currentUser);
   const [data, setData] = useState({});
-  const { id } = useParams();
+
   useEffect(() => {
-    // dispatch(getInvoiceStart());
-    // dispatch(getInvoiceSucces());
-    const userRef = ref(database, `${localId}/${id}`);
-    onValue(query(userRef), (snapshot) => {
-      setData({ ...snapshot.val() });
-    });
+    let values = {};
+    ids.ids.length > 1
+      ? ids.ids.forEach((id, i) => {
+          onValue(query(ref(database, `${localId}/${id}`)), (snapshot) => {
+            values[i] = snapshot.val();
+          });
+        })
+      : onValue(
+          query(ref(database, `${localId}/${ids.ids[0]}`)),
+          (snapshot) => {
+            setData({ ...snapshot.val() });
+          }
+        );
+
+    setData(values);
   }, []);
+  function subtotal2(items) {
+    return items.map(({ price }) => price).reduce((sum, i) => sum + i, 0);
+  }
+  const subT = (data) => {
+    return Object.values(data)
+      .map((data) => data.productQuantity * data.productPrice)
+      .reduce((sum, i) => sum + i, 0);
+  };
+
+  const invoiceTaxes = TAX_RATE * subT(data);
+  const invoiceTotal = invoiceTaxes + subT(data);
   return (
     <TableContainer component={Paper}>
       <Table sx={{ minWidth: 700 }} aria-label="spanning table">
@@ -207,25 +222,21 @@ export default function SpanningTable() {
           </TableRow>
         </TableHead>
         <TableBody>
-          <TableCell>{data.productName}</TableCell>
-          <TableCell align="right">{data.productQuantity}</TableCell>
-          <TableCell align="right">{data.productPrice}</TableCell>
-          <TableCell align="right">
-            {data.productPrice * data.productQuantity}
-          </TableCell>
-          {/* {rows.map((row) => (
-            <TableRow key={row.desc}>
-              <TableCell>{row.desc}</TableCell>
-              <TableCell align="right">{row.qty}</TableCell>
-              <TableCell align="right">{row.unit}</TableCell>
-              <TableCell align="right">{ccyFormat(row.price)}</TableCell>
+          {Object.values(data).map((data, i) => (
+            <TableRow key={i}>
+              <TableCell>{data.productName}</TableCell>
+              <TableCell align="right">{data.productQuantity}</TableCell>
+              <TableCell align="right">{data.productPrice}</TableCell>
+              <TableCell align="right">
+                {data.productPrice * data.productQuantity}
+              </TableCell>
             </TableRow>
-          ))} */}
+          ))}
 
           <TableRow>
             <TableCell rowSpan={3} />
             <TableCell colSpan={2}>Subtotal</TableCell>
-            <TableCell align="right">{ccyFormat()}</TableCell>
+            <TableCell align="right">{ccyFormat(subT(data))}</TableCell>
           </TableRow>
           <TableRow>
             <TableCell>Tax</TableCell>

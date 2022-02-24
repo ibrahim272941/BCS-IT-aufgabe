@@ -5,31 +5,7 @@
 }
 
 
-.Invoice ul li {
 
-  list-style-type: none;
-
-}
-
-.Invoice[size="A4"] {
-  width: 70vw;
-  min-width: 50vw;
-  overflow: hidden;
-  min-height: 90vh;
-}
-
-.footer p {
-  font-size: .8rem;
-
-}
-
-.footer {
-  line-height: .8rem;
-}
-
-.address {
-  margin-top: 6rem;
-}
 
 .App-logo {
   height: 40vmin;

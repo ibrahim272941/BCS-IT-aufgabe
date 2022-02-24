@@ -83,7 +83,7 @@ const Register = () => {
             textAlign: "center",
             borderRadius: "1rem",
             padding: "2rem",
-            bgcolor: "#f8f8f6",
+
             // boxShadow: "3px 5px 5px 3px #555",
             bgcolor: "#393a3b",
           }}
@@ -117,7 +117,6 @@ const Register = () => {
                     <TextField
                       name="username"
                       label="User Name"
-                      variant="outlined"
                       value={values.username}
                       onChange={handleChange}
                       onBlur={handleBlur}
@@ -133,7 +132,6 @@ const Register = () => {
                     <TextField
                       name="email"
                       label="Email"
-                      variant="outlined"
                       value={values.email}
                       onChange={handleChange}
                       onBlur={handleBlur}
@@ -150,7 +148,6 @@ const Register = () => {
                       type={showPassword ? "text" : "password"}
                       name="password"
                       label="Password"
-                      variant="outlined"
                       value={values.password}
                       onChange={handleChange}
                       onBlur={handleBlur}

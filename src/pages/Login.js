@@ -122,7 +122,6 @@ const Login = () => {
                     <TextField
                       name="email"
                       label="Email"
-                      variant="outlined"
                       value={values.email}
                       onChange={handleChange}
                       onBlur={handleBlur}
@@ -139,7 +138,6 @@ const Login = () => {
                       type={showPassword ? "text" : "password"}
                       name="password"
                       label="Password"
-                      variant="outlined"
                       value={values.password}
                       onChange={handleChange}
                       onBlur={handleBlur}

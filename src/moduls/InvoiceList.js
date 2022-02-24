@@ -1,4 +1,3 @@
-import * as React from "react";
 import Paper from "@mui/material/Paper";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
@@ -7,12 +6,15 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TablePagination from "@mui/material/TablePagination";
 import TableRow from "@mui/material/TableRow";
-import { useEffect } from "react";
+import { useEffect, useState, useMemo, useRef } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import MainNavbar from "../component/MainNavbar";
-import { Link } from "react-router-dom";
+
+import { Link, useNavigate } from "react-router-dom";
 import { delInvoiceStart, getInvoiceStart } from "../redux/mainredux/actions";
 import PersistentDrawerLeft from "../component/Modal";
+import { Button } from "@mui/material";
+
+import { useBaseContext } from "../contexts/BaseContext";
 
 const columns = [
   { id: "name", label: "Costumer Name", minWidth: 100 },
@@ -62,8 +64,8 @@ const columns = [
   {
     id: "action",
     label: "Actions",
-    minWidth: 170,
-    align: "center",
+    minWidth: 120,
+    align: "left",
   },
 ];
 
@@ -73,8 +75,20 @@ function createData(name, code, population, size) {
 }
 
 export default function StickyHeadTable() {
-  const [page, setPage] = React.useState(0);
-  const [rowsPerPage, setRowsPerPage] = React.useState(10);
+  const navigate = useNavigate();
+  const rowEl = useRef();
+  const [rowSel, setRowSel] = useState(true);
+  const baseContext = useBaseContext();
+  const uiProps = useMemo(
+    () => ({
+      ids: baseContext.ids,
+      setIds: baseContext.setIds,
+    }),
+    [baseContext.setIds, baseContext.ids]
+  );
+
+  const [page, setPage] = useState(0);
+  const [rowsPerPage, setRowsPerPage] = useState(10);
 
   const {
     reloadUserInfo: { localId },
@@ -103,6 +117,17 @@ export default function StickyHeadTable() {
     setRowsPerPage(+event.target.value);
     setPage(0);
   };
+  const handleChange = (id) => {
+    !uiProps.ids.includes(id) && uiProps.setIds([...uiProps.ids, id]);
+    setRowSel(!rowSel);
+
+    // ? (rowEl.current.style.backgroundColor = "green") &&
+    //   uiProps.setIds([...uiProps.ids, id])
+    // : (rowEl.current.style.backgroundColor = "white") && uiProps.setIds([]);
+  };
+  const handleInvoice = () => {
+    navigate("/view");
+  };
 
   return (
     <div className="invoiceList">
@@ -115,6 +140,7 @@ export default function StickyHeadTable() {
           height: "100vh",
         }}
       >
+        <Button onClick={handleInvoice}>View Invoice</Button>
         <TableContainer sx={{ maxHeight: 440 }}>
           <Table stickyHeader aria-label="sticky table">
             <TableHead>
@@ -134,7 +160,14 @@ export default function StickyHeadTable() {
               {data ? (
                 Object.keys(data).map((id, i) => {
                   return (
-                    <TableRow key={i} hover role="checkbox" tabIndex={-1}>
+                    <TableRow
+                      onClick={() => handleChange(id)}
+                      key={i}
+                      hover
+                      role="checkbox"
+                      tabIndex={-1}
+                      ref={rowEl}
+                    >
                       <TableCell>{data[id].costumerName}</TableCell>
                       <TableCell>{data[id].costumerEmail}</TableCell>
                       <TableCell>{data[id].costumerMobile}</TableCell>
@@ -155,12 +188,6 @@ export default function StickyHeadTable() {
                             onClick={() => deleteInvoice(id)}
                           >
                             <i className="fas fa-trash-alt" />
-                          </p>
-                        </Link>
-
-                        <Link to={`/view/${id}`}>
-                          <p className="btn text-primary">
-                            <i className="fas fa-eye" />
                           </p>
                         </Link>
                       </TableCell>

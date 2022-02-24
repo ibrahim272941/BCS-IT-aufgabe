@@ -121,7 +121,7 @@ export default function PersistentDrawerLeft() {
             boxSizing: "border-box",
           },
         }}
-        variant="contained"
+        // variant="contained"
         anchor="left"
         open={open}
       >
@@ -147,21 +147,21 @@ export default function PersistentDrawerLeft() {
 
           <div className="d-flex flex-column">
             <div style={{ marginLeft: "1rem" }}>
-              <ListItem button key={"newinvoice"}>
+              <ListItem button>
                 <NavLink to="/invoice" className="btn btn-warning w-100">
                   New invoice
                 </NavLink>
 
                 <ListItemText />
               </ListItem>
-              <ListItem button key={"newinvoice"}>
+              <ListItem button>
                 <NavLink to="/" className="btn btn-warning w-100">
                   Main Page
                 </NavLink>
 
                 <ListItemText />
               </ListItem>
-              <ListItem button key={"newinvoice"}>
+              <ListItem button>
                 <NavLink to="/invoicelist" className="btn btn-warning w-100">
                   Invoice List
                 </NavLink>

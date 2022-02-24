@@ -20,7 +20,7 @@ const AppRouter = () => {
           <Route path="/invoice" element={<AddEditInvoice />} />
           <Route path="/update/:id" element={<AddEditInvoice />} />
           <Route path="invoicelist" element={<InvoiceList />} />
-          <Route path="view/:id" element={<ViewInvoice />} />
+          <Route path="view/" element={<ViewInvoice />} />
           <Route path="/view/pdf" element={<PdfViewer />} />
         </Route>
 

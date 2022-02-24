@@ -6,6 +6,7 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TablePagination from "@mui/material/TablePagination";
 import TableRow from "@mui/material/TableRow";
+import Checkbox from "@mui/material/Checkbox";
 import { useEffect, useState, useMemo, useRef } from "react";
 import { useSelector, useDispatch } from "react-redux";
 
@@ -13,8 +14,9 @@ import { Link, useNavigate } from "react-router-dom";
 import { delInvoiceStart, getInvoiceStart } from "../redux/mainredux/actions";
 import PersistentDrawerLeft from "../component/Modal";
 import { Button } from "@mui/material";
-
+import { successNote } from "../utils/customToastify";
 import { useBaseContext } from "../contexts/BaseContext";
+import { ToastContainer, toast } from "react-toastify";
 
 const columns = [
   { id: "name", label: "Costumer Name", minWidth: 100 },
@@ -76,8 +78,8 @@ function createData(name, code, population, size) {
 
 export default function StickyHeadTable() {
   const navigate = useNavigate();
-  const rowEl = useRef();
-  const [rowSel, setRowSel] = useState(true);
+
+  const [rowSel, setRowSel] = useState(false);
   const baseContext = useBaseContext();
   const uiProps = useMemo(
     () => ({
@@ -104,7 +106,7 @@ export default function StickyHeadTable() {
   const deleteInvoice = (id) => {
     if (window.confirm("Are you sure to delete the invoice")) {
       dispatch(delInvoiceStart(localId, id));
-
+      successNote("Invoice is deleted");
       window.location.reload();
     }
   };
@@ -128,10 +130,11 @@ export default function StickyHeadTable() {
   const handleInvoice = () => {
     navigate("/view");
   };
-
+  console.log(uiProps.ids);
   return (
     <div className="invoiceList">
       <PersistentDrawerLeft />
+      <ToastContainer />
       <Paper
         sx={{
           width: "100%",
@@ -140,7 +143,15 @@ export default function StickyHeadTable() {
           height: "100vh",
         }}
       >
-        <Button onClick={handleInvoice}>View Invoice</Button>
+        {rowSel && (
+          <Button
+            onClick={handleInvoice}
+            sx={{ margin: ".6rem" }}
+            variant="contained"
+          >
+            View Invoice
+          </Button>
+        )}
         <TableContainer sx={{ maxHeight: 440 }}>
           <Table stickyHeader aria-label="sticky table">
             <TableHead>
@@ -160,38 +171,43 @@ export default function StickyHeadTable() {
               {data ? (
                 Object.keys(data).map((id, i) => {
                   return (
-                    <TableRow
-                      onClick={() => handleChange(id)}
-                      key={i}
-                      hover
-                      role="checkbox"
-                      tabIndex={-1}
-                      ref={rowEl}
-                    >
-                      <TableCell>{data[id].costumerName}</TableCell>
-                      <TableCell>{data[id].costumerEmail}</TableCell>
-                      <TableCell>{data[id].costumerMobile}</TableCell>
-                      <TableCell>{data[id].costumerAddres}</TableCell>
-                      <TableCell>{data[id].productName}</TableCell>
-                      <TableCell>{data[id].productPrice}</TableCell>
-                      <TableCell>{data[id].productQuantity}</TableCell>
-                      <TableCell>{data[id].totalAmount}€</TableCell>
-                      <TableCell>
-                        <Link to={`/update/${id}`}>
-                          <p className="btn text-primary">
-                            <i className="fas fa-pencil" />
-                          </p>
-                        </Link>
-                        <Link to="/invoicelist">
-                          <p
-                            className="btn text-danger"
-                            onClick={() => deleteInvoice(id)}
-                          >
-                            <i className="fas fa-trash-alt" />
-                          </p>
-                        </Link>
-                      </TableCell>
-                    </TableRow>
+                    <>
+                      <TableRow key={i} hover role="checkbox" tabIndex={-1}>
+                        <TableCell>
+                          {" "}
+                          <Checkbox
+                            onClick={() => handleChange(id)}
+                            color="primary"
+                            sx={{ width: "4px" }}
+                          />
+                        </TableCell>
+                        <TableCell>{data[id].costumerName}</TableCell>
+                        <TableCell>{data[id].costumerEmail}</TableCell>
+                        <TableCell>{data[id].costumerMobile}</TableCell>
+                        <TableCell>{data[id].costumerAddres}</TableCell>
+                        <TableCell>{data[id].productName}</TableCell>
+                        <TableCell>{data[id].productPrice}</TableCell>
+                        <TableCell>{data[id].productQuantity}</TableCell>
+                        <TableCell>{data[id].totalAmount}€</TableCell>
+                        {rowSel && (
+                          <TableCell>
+                            <Link to={`/update/${id}`}>
+                              <p className="btn text-primary">
+                                <i className="fas fa-pencil" />
+                              </p>
+                            </Link>
+                            <Link to="/invoicelist">
+                              <p
+                                className="btn text-danger"
+                                onClick={() => deleteInvoice(id)}
+                              >
+                                <i className="fas fa-trash-alt" />
+                              </p>
+                            </Link>
+                          </TableCell>
+                        )}
+                      </TableRow>
+                    </>
                   );
                 })
               ) : (

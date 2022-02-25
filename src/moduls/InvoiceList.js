@@ -13,13 +13,13 @@ import { useSelector, useDispatch } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import { delInvoiceStart, getInvoiceStart } from "../redux/mainredux/actions";
 import PersistentDrawerLeft from "../component/Modal";
-import { Button } from "@mui/material";
+import { Button, TextField } from "@mui/material";
 import { successNote } from "../utils/customToastify";
 import { useBaseContext } from "../contexts/BaseContext";
 import { ToastContainer, toast } from "react-toastify";
 
 const columns = [
-  { id: "x", label: "", minWidth: 10, align: "left" },
+  { id: "check", label: "", minWidth: 10, align: "left" },
   { id: "name", label: "Costumer Name", minWidth: 100, align: "left" },
   { id: "code", label: "Costumer Email", minWidth: 170, align: "left" },
   {
@@ -75,7 +75,7 @@ const columns = [
 export default function StickyHeadTable() {
   const navigate = useNavigate();
 
-  const [rowSel, setRowSel] = useState(false);
+  const [search, setSearch] = useState("");
   const baseContext = useBaseContext();
   const uiProps = useMemo(
     () => ({
@@ -119,13 +119,26 @@ export default function StickyHeadTable() {
   const handleChange = (id) => {
     !uiProps.ids.includes(id) && uiProps.setIds([...uiProps.ids, id]);
   };
-  console.log(uiProps.ids);
+  
   const handleInvoice = () => {
     navigate("/view");
   };
+  const handleChangeSearch = (e)=>{
+    let txt = e.target.value
+    setSearch((txt).charAt(0).toUpperCase() + txt.substr(1).toLowerCase())
+   
+
+  }
+  const data2 =  Object.keys(data).filter((id)=>{
+    return search !== "" ? data[id].costumerName.includes(search):id
+  })
+
+
+ 
   return (
     <div className="invoiceList">
       <PersistentDrawerLeft />
+    
       <ToastContainer />
       <Paper
         sx={{
@@ -134,7 +147,16 @@ export default function StickyHeadTable() {
           marginTop: "4rem",
           height: "100vh",
         }}
-      >
+      >  <TextField
+      name="search"
+      label="Enter Costumer Name"
+      
+      onChange={(e)=>handleChangeSearch(e)}
+      variant="standard"
+      color="warning"
+      focused
+      sx={{marginTop:".6rem"}}
+      />
         {uiProps.ids.length >= 1 && (
           <Button
             onClick={handleInvoice}
@@ -150,7 +172,7 @@ export default function StickyHeadTable() {
           <Table stickyHeader aria-label="sticky table">
             <TableHead sx={{ border: "2px solid", marginLeft: "3rem" }}>
               <TableRow>
-                {columns.map((column) => (
+                {columns.map((column ) => (
                   <TableCell
                     key={column.id}
                     align={column.align}
@@ -164,7 +186,7 @@ export default function StickyHeadTable() {
             </TableHead>
             <TableBody>
               {data ? (
-                Object.keys(data).map((id, i) => {
+                data2.map((id, i) => {
                   return (
                     <>
                       <TableRow key={i} hover role="checkbox" tabIndex={-1}>

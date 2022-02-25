@@ -23,6 +23,7 @@ function ccyFormat(num) {
 }
 
 export default function SpanningTable() {
+  const [count, setCount] = useState(2);
   const navigate = useNavigate();
   const baseContext = useBaseContext();
   const ids = useMemo(
@@ -38,8 +39,8 @@ export default function SpanningTable() {
   } = useSelector((state) => state.user.currentUser);
   const [data, setData] = useState({});
 
+  let values = {};
   useEffect(() => {
-    let values = {};
     ids.ids.length > 1
       ? ids.ids.forEach((id, i) => {
           onValue(query(ref(database, `${localId}/${id}`)), (snapshot) => {
@@ -54,12 +55,16 @@ export default function SpanningTable() {
         );
 
     setData(values);
-    console.log(values);
+    console.log(Object.values(data));
+ 
   }, []);
-  console.log(ids.ids[0]);
+  
+  console.log(Boolean(data[0]));
+  console.log(Boolean(values))
+  
 
   const subT = (data) => {
-    return Object.values(data)
+    return data[0] && Object.values(data)
       .map((data) => data.productQuantity * data.productPrice)
       .reduce((sum, i) => sum + i, 0);
   };
@@ -78,7 +83,7 @@ export default function SpanningTable() {
       >
         Back to Invoice List
       </Button>
-      <Table sx={{ minWidth: 700 }} aria-label="spanning table">
+      {data[0] ?  <Table sx={{ minWidth: 700 }} aria-label="spanning table">
         <TableHead>
           <TableRow>
             <TableCell align="center" colSpan={3}>
@@ -122,7 +127,8 @@ export default function SpanningTable() {
             <TableCell align="right">{ccyFormat(invoiceTotal)}</TableCell>
           </TableRow>
         </TableBody>
-      </Table>
+      </Table> : <TableCell>No invoice to show</TableCell> }
+     
     </TableContainer>
   );
 }

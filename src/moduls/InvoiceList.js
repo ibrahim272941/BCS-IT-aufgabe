@@ -19,8 +19,9 @@ import { useBaseContext } from "../contexts/BaseContext";
 import { ToastContainer, toast } from "react-toastify";
 
 const columns = [
-  { id: "name", label: "Costumer Name", minWidth: 100 },
-  { id: "code", label: "Costumer Email", minWidth: 170 },
+  { id: "x", label: "", minWidth: 10, align: "left" },
+  { id: "name", label: "Costumer Name", minWidth: 100, align: "left" },
+  { id: "code", label: "Costumer Email", minWidth: 170, align: "left" },
   {
     id: "population",
     label: "Costumer Mobile",
@@ -71,11 +72,6 @@ const columns = [
   },
 ];
 
-function createData(name, code, population, size) {
-  const density = population / size;
-  return { name, code, population, size, density };
-}
-
 export default function StickyHeadTable() {
   const navigate = useNavigate();
 
@@ -101,6 +97,7 @@ export default function StickyHeadTable() {
 
   useEffect(() => {
     dispatch(getInvoiceStart(localId));
+    uiProps.setIds([]);
   }, []);
 
   const deleteInvoice = (id) => {
@@ -121,16 +118,11 @@ export default function StickyHeadTable() {
   };
   const handleChange = (id) => {
     !uiProps.ids.includes(id) && uiProps.setIds([...uiProps.ids, id]);
-    setRowSel(!rowSel);
-
-    // ? (rowEl.current.style.backgroundColor = "green") &&
-    //   uiProps.setIds([...uiProps.ids, id])
-    // : (rowEl.current.style.backgroundColor = "white") && uiProps.setIds([]);
   };
+  console.log(uiProps.ids);
   const handleInvoice = () => {
     navigate("/view");
   };
-  console.log(uiProps.ids);
   return (
     <div className="invoiceList">
       <PersistentDrawerLeft />
@@ -143,24 +135,27 @@ export default function StickyHeadTable() {
           height: "100vh",
         }}
       >
-        {rowSel && (
+        {uiProps.ids.length >= 1 && (
           <Button
             onClick={handleInvoice}
             sx={{ margin: ".6rem" }}
             variant="contained"
+            color="warning"
           >
             View Invoice
           </Button>
         )}
+
         <TableContainer sx={{ maxHeight: 440 }}>
           <Table stickyHeader aria-label="sticky table">
-            <TableHead>
+            <TableHead sx={{ border: "2px solid", marginLeft: "3rem" }}>
               <TableRow>
                 {columns.map((column) => (
                   <TableCell
                     key={column.id}
                     align={column.align}
                     style={{ minWidth: column.minWidth }}
+                    sx={{ marginLeft: "3rem" }}
                   >
                     {column.label}
                   </TableCell>
@@ -189,23 +184,22 @@ export default function StickyHeadTable() {
                         <TableCell>{data[id].productPrice}</TableCell>
                         <TableCell>{data[id].productQuantity}</TableCell>
                         <TableCell>{data[id].totalAmount}€</TableCell>
-                        {rowSel && (
-                          <TableCell>
-                            <Link to={`/update/${id}`}>
-                              <p className="btn text-primary">
-                                <i className="fas fa-pencil" />
-                              </p>
-                            </Link>
-                            <Link to="/invoicelist">
-                              <p
-                                className="btn text-danger"
-                                onClick={() => deleteInvoice(id)}
-                              >
-                                <i className="fas fa-trash-alt" />
-                              </p>
-                            </Link>
-                          </TableCell>
-                        )}
+
+                        <TableCell>
+                          <Link to={`/update/${id}`}>
+                            <p className="btn text-primary">
+                              <i className="fas fa-pencil" />
+                            </p>
+                          </Link>
+                          <Link to="/invoicelist">
+                            <p
+                              className="btn text-danger"
+                              onClick={() => deleteInvoice(id)}
+                            >
+                              <i className="fas fa-trash-alt" />
+                            </p>
+                          </Link>
+                        </TableCell>
                       </TableRow>
                     </>
                   );

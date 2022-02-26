@@ -23,7 +23,8 @@ function ccyFormat(num) {
 }
 
 export default function SpanningTable() {
-  const [count, setCount] = useState(2);
+  const [data, setData] = useState({});
+
   const navigate = useNavigate();
   const baseContext = useBaseContext();
   const ids = useMemo(
@@ -31,13 +32,12 @@ export default function SpanningTable() {
       ids: baseContext.ids,
       setIds: baseContext.setIds,
     }),
-    [baseContext.ids, baseContext.setIds]
+    [baseContext.ids, baseContext.setIds, data]
   );
   const {
     displayName,
     reloadUserInfo: { localId },
   } = useSelector((state) => state.user.currentUser);
-  const [data, setData] = useState({});
 
   let values = {};
   useEffect(() => {
@@ -56,17 +56,18 @@ export default function SpanningTable() {
 
     setData(values);
     console.log(Object.values(data));
- 
   }, []);
-  
+
   console.log(Boolean(data[0]));
-  console.log(Boolean(values))
-  
+  console.log(Boolean(values));
 
   const subT = (data) => {
-    return data[0] && Object.values(data)
-      .map((data) => data.productQuantity * data.productPrice)
-      .reduce((sum, i) => sum + i, 0);
+    return (
+      data[0] &&
+      Object.values(data)
+        .map((data) => data.productQuantity * data.productPrice)
+        .reduce((sum, i) => sum + i, 0)
+    );
   };
 
   const invoiceTaxes = TAX_RATE * subT(data);
@@ -83,52 +84,55 @@ export default function SpanningTable() {
       >
         Back to Invoice List
       </Button>
-      {data[0] ?  <Table sx={{ minWidth: 700 }} aria-label="spanning table">
-        <TableHead>
-          <TableRow>
-            <TableCell align="center" colSpan={3}>
-              Details
-            </TableCell>
-            <TableCell align="right">Price</TableCell>
-          </TableRow>
-          <TableRow>
-            <TableCell>Product Name</TableCell>
-            <TableCell align="right">Qty.</TableCell>
-            <TableCell align="right">Unit</TableCell>
-            <TableCell align="right">Sum</TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {Object.values(data).map((data, i) => (
-            <TableRow key={i}>
-              <TableCell>{data.productName}</TableCell>
-              <TableCell align="right">{data.productQuantity}</TableCell>
-              <TableCell align="right">{data.productPrice}</TableCell>
-              <TableCell align="right">
-                {data.productPrice * data.productQuantity}
+      {data[0] ? (
+        <Table sx={{ minWidth: 700 }} aria-label="spanning table">
+          <TableHead>
+            <TableRow>
+              <TableCell align="center" colSpan={3}>
+                Details
               </TableCell>
+              <TableCell align="right">Price</TableCell>
             </TableRow>
-          ))}
+            <TableRow>
+              <TableCell>Product Name</TableCell>
+              <TableCell align="right">Qty.</TableCell>
+              <TableCell align="right">Unit</TableCell>
+              <TableCell align="right">Sum</TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {Object.values(data).map((data, i) => (
+              <TableRow key={i}>
+                <TableCell>{data.productName}</TableCell>
+                <TableCell align="right">{data.productQuantity}</TableCell>
+                <TableCell align="right">{data.productPrice}</TableCell>
+                <TableCell align="right">
+                  {data.productPrice * data.productQuantity}
+                </TableCell>
+              </TableRow>
+            ))}
 
-          <TableRow>
-            <TableCell rowSpan={3} />
-            <TableCell colSpan={2}>Subtotal</TableCell>
-            <TableCell align="right">{ccyFormat(subT(data))}</TableCell>
-          </TableRow>
-          <TableRow>
-            <TableCell>Tax</TableCell>
-            <TableCell align="right">{`${(TAX_RATE * 100).toFixed(
-              0
-            )} %`}</TableCell>
-            <TableCell align="right">{ccyFormat(invoiceTaxes)}</TableCell>
-          </TableRow>
-          <TableRow>
-            <TableCell colSpan={2}>Total</TableCell>
-            <TableCell align="right">{ccyFormat(invoiceTotal)}</TableCell>
-          </TableRow>
-        </TableBody>
-      </Table> : <TableCell>No invoice to show</TableCell> }
-     
+            <TableRow>
+              <TableCell rowSpan={3} />
+              <TableCell colSpan={2}>Subtotal</TableCell>
+              <TableCell align="right">{ccyFormat(subT(data))}</TableCell>
+            </TableRow>
+            <TableRow>
+              <TableCell>Tax</TableCell>
+              <TableCell align="right">{`${(TAX_RATE * 100).toFixed(
+                0
+              )} %`}</TableCell>
+              <TableCell align="right">{ccyFormat(invoiceTaxes)}</TableCell>
+            </TableRow>
+            <TableRow>
+              <TableCell colSpan={2}>Total</TableCell>
+              <TableCell align="right">{ccyFormat(invoiceTotal)}</TableCell>
+            </TableRow>
+          </TableBody>
+        </Table>
+      ) : (
+        <TableCell>No invoice to show</TableCell>
+      )}
     </TableContainer>
   );
 }
